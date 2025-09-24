@@ -2,6 +2,8 @@ namespace Gestion_pacientes_mascotas.Models
 {
     public class PacienteService
     {
+        private static byte edad;
+
         public static void RegistrarPaciente(List<Paciente> Lista)
         {
             Console.WriteLine("===Bienvenido al sistema de registro de pacientes===");
@@ -9,8 +11,21 @@ namespace Gestion_pacientes_mascotas.Models
             string nombre = Console.ReadLine();
             Console.Write("Ingrese el apellido del paciente: ");
             string apellido = Console.ReadLine();
-            Console.Write("Ingrese la edad del paciente: ");
-            Byte edad = Byte.Parse(Console.ReadLine());
+            try
+            {
+                Console.Write("Ingrese la edad del paciente: ");
+                byte edad = byte.Parse(Console.ReadLine() ?? "0");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Error: La edad debe ser un número válido.");
+                return;
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Error: La edad está fuera del rango permitido (0-255).");
+                return;
+            }
             Console.Write("Ingrese los síntomas del paciente: ");
             string sintomas = Console.ReadLine();
             Paciente nuevoPaciente = new Paciente
