@@ -10,7 +10,6 @@ namespace Gestion_pacientes_mascotas.Models
             Console.Write("Ingrese el nombre del paciente: ");
             string nombre = Console.ReadLine();
             Console.Write("Ingrese el apellido del paciente: ");
-            string apellido = Console.ReadLine();
             try
             {
                 Console.Write("Ingrese la edad del paciente: ");
@@ -32,7 +31,6 @@ namespace Gestion_pacientes_mascotas.Models
             {
                 Id = Guid.NewGuid(),
                 Nombre = nombre,
-                Apellido = apellido,
                 Edad = edad,
                 Sintomas = sintomas
             };
@@ -51,7 +49,6 @@ namespace Gestion_pacientes_mascotas.Models
             {
                 Console.WriteLine($"ID: {paciente.Id}");
                 Console.WriteLine($"Nombre: {paciente.Nombre}");
-                Console.WriteLine($"Apellido: {paciente.Apellido}");
                 Console.WriteLine($"Edad: {paciente.Edad}");
                 Console.WriteLine($"Síntomas: {paciente.Sintomas}");
                 Console.WriteLine("-------------------------------");
@@ -72,7 +69,6 @@ namespace Gestion_pacientes_mascotas.Models
             {
                 Console.WriteLine($"ID: {paciente.Id}");
                 Console.WriteLine($"Nombre: {paciente.Nombre}");
-                Console.WriteLine($"Apellido: {paciente.Apellido}");
                 Console.WriteLine($"Edad: {paciente.Edad}");
                 Console.WriteLine($"Síntomas: {paciente.Sintomas}");
                 Console.WriteLine("-------------------------------");

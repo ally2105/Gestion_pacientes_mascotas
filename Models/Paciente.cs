@@ -4,7 +4,6 @@ namespace Gestion_pacientes_mascotas.Models
     {
         public Guid Id { get; set; }
         public string Nombre { get; set; }
-        public string Apellido { get; set; }
         public Byte Edad { get; set; }
         public string Sintomas { get; set; }
     }
