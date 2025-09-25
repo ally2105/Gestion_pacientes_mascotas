@@ -9,7 +9,6 @@ namespace Gestion_pacientes_mascotas.Models
             Console.WriteLine("===Bienvenido al sistema de registro de pacientes===");
             Console.Write("Ingrese el nombre del paciente: ");
             string nombre = Console.ReadLine();
-            Console.Write("Ingrese el apellido del paciente: ");
             try
             {
                 Console.Write("Ingrese la edad del paciente: ");
@@ -35,7 +34,6 @@ namespace Gestion_pacientes_mascotas.Models
                 Sintomas = sintomas
             };
             Lista.Add(nuevoPaciente);
-            Console.WriteLine("Paciente registrado con éxito.");
         }
         public static void VerPacientes(List<Paciente> Lista)
         {

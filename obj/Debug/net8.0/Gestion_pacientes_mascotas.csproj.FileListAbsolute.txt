@@ -3,3 +3,13 @@
 /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.AssemblyInfo.cs
 /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.csproj.CoreCompileInputs.cache
 /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.sourcelink.json
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/bin/Debug/net8.0/Gestion_pacientes_mascotas
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/bin/Debug/net8.0/Gestion_pacientes_mascotas.deps.json
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/bin/Debug/net8.0/Gestion_pacientes_mascotas.runtimeconfig.json
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/bin/Debug/net8.0/Gestion_pacientes_mascotas.dll
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/bin/Debug/net8.0/Gestion_pacientes_mascotas.pdb
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.dll
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/refint/Gestion_pacientes_mascotas.dll
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.pdb
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/Gestion_pacientes_mascotas.genruntimeconfig.cache
+/home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/obj/Debug/net8.0/ref/Gestion_pacientes_mascotas.dll
