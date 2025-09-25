@@ -1,141 +1,121 @@
 ﻿using System;
 using System.Collections.Generic;
-using Gestion_pacientes_mascotas.Models;
 
 class Program
 {
     static void Main()
     {
-        List<Paciente> listaPacientes = new List<Paciente>();
+        Dictionary<Guid, Paciente> pacientesDic = new Dictionary<Guid, Paciente>();
         string opcion = "";
 
         while (opcion.ToLower() != "salir")
         {
-            Console.WriteLine("=== Clínica Salud - Menú Principal ===");
-            Console.WriteLine("1. Registrar Paciente");
-            Console.WriteLine("2. Ver Pacientes");
-            Console.WriteLine("3. Buscar Paciente");
-            Console.WriteLine("Escribe 'salir' para salir");
+            Console.WriteLine("1. Registrar paciente");
+            Console.WriteLine("2. Ver pacientes");
+            Console.WriteLine("3. Buscar paciente por ID");
+            Console.WriteLine("Escriba 'salir' para terminar");
             Console.Write("Seleccione una opción: ");
             opcion = Console.ReadLine();
-
-            Console.WriteLine();
 
             switch (opcion)
             {
                 case "1":
-                    PacienteService.RegistrarPaciente(listaPacientes);
-                    Console.WriteLine("Paciente registrado con éxito.");
+                    Console.WriteLine("=== Registro de nuevo paciente ===");
+                    Paciente nuevo = new Paciente();
+
+                    nuevo.Id = Guid.NewGuid(); // Generar ID automático con Guid
+
+                    Console.Write("Nombre: ");
+                    nuevo.Nombre = Console.ReadLine();
+
+                    Console.Write("Edad: ");
+                    nuevo.Edad = byte.Parse(Console.ReadLine());
+
+                    Console.Write("Síntomas: ");
+                    nuevo.Sintomas = Console.ReadLine();
+
+                    pacientesDic.Add(nuevo.Id, nuevo);
+                    Console.WriteLine($"Paciente registrado con ID: {nuevo.Id}");
                     break;
 
                 case "2":
-                    PacienteService.VerPacientes(listaPacientes);
-
-                    bool continuarSubMenu = true;
-                    while (continuarSubMenu)
+                    Console.WriteLine("=== Lista de pacientes ===");
+                    foreach (var kvp in pacientesDic)
                     {
-                        Console.WriteLine("Escribe 1. para agregar otro paciente");
-                        Console.WriteLine("Escribe 2. para editar un paciente");
-                        Console.WriteLine("Escribe 3. para eliminar un paciente");
-                        Console.WriteLine("Escribe 4. para volver al menú principal");
-                        string subOpcion = Console.ReadLine();
-
-                        switch (subOpcion)
-                        {
-                            case "1":
-                                PacienteService.RegistrarPaciente(listaPacientes);
-                                break;
-
-                            case "2":
-                                Console.Write("Ingrese el ID del paciente a editar: ");
-                                string idEdicion = Console.ReadLine();
-                                var pacienteAEditar = listaPacientes.Find(p => p.Id.ToString() == idEdicion);
-                                if (pacienteAEditar != null)
-                                {
-                                    Console.Write("Nuevo nombre (deje vacío para no cambiar): ");
-                                    string nuevoNombre = Console.ReadLine();
-                                    if (!string.IsNullOrEmpty(nuevoNombre))
-                                        pacienteAEditar.Nombre = nuevoNombre;
-
-                                    Console.Write("Nueva edad (deje vacío para no cambiar): ");
-                                    string nuevaEdadInput = Console.ReadLine();
-                                    if (!string.IsNullOrEmpty(nuevaEdadInput))
-                                    {
-                                        try
-                                        {
-                                            byte nuevaEdad = byte.Parse(nuevaEdadInput);
-                                            pacienteAEditar.Edad = nuevaEdad;
-                                        }
-                                        catch (FormatException)
-                                        {
-                                            Console.WriteLine("Error: La edad debe ser un número válido.");
-                                            continue;
-                                        }
-                                        catch (OverflowException)
-                                        {
-                                            Console.WriteLine("Error: La edad está fuera del rango permitido (0-255).");
-                                            continue;
-                                        }
-                                    }
-
-                                    Console.Write("Nuevos síntomas (deje vacío para no cambiar): ");
-                                    string nuevosSintomas = Console.ReadLine();
-                                    if (!string.IsNullOrEmpty(nuevosSintomas))
-                                        pacienteAEditar.Sintomas = nuevosSintomas;
-
-                                    Console.WriteLine("Paciente actualizado con éxito.");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Paciente no encontrado.");
-                                }
-                                break;
-
-                            case "3":
-                                Console.Write("Ingrese el ID del paciente a eliminar: ");
-                                string idEliminacion = Console.ReadLine();
-                                var pacienteAEliminar = listaPacientes.Find(p => p.Id.ToString() == idEliminacion);
-                                if (pacienteAEliminar != null)
-                                {
-                                    listaPacientes.Remove(pacienteAEliminar);
-                                    Console.WriteLine("Paciente eliminado con éxito.");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Paciente no encontrado.");
-                                }
-                                break;
-
-                            case "4":
-                                continuarSubMenu = false; // salir del submenú
-                                break;
-
-                            default:
-                                Console.WriteLine("Opción no válida. Intente de nuevo.");
-                                break;
-                        }
+                        var p = kvp.Value;
+                        Console.WriteLine($"ID: {p.Id}, Nombre: {p.Nombre}, Edad: {p.Edad}, Síntomas: {p.Sintomas}");
                     }
                     break;
 
                 case "3":
-                    PacienteService.BuscarPaciente(listaPacientes);
+                    Console.Write("Ingrese ID del paciente a buscar (copie y pegue el GUID): ");
+                    string idInput = Console.ReadLine();
+
+                    if (Guid.TryParse(idInput, out Guid idBuscar) &&
+                        pacientesDic.TryGetValue(idBuscar, out Paciente pacienteBuscado))
+                    {
+                        Console.WriteLine($"ID: {pacienteBuscado.Id}, Nombre: {pacienteBuscado.Nombre}, Edad: {pacienteBuscado.Edad}, Síntomas: {pacienteBuscado.Sintomas}");
+
+                        Console.WriteLine("1. Editar paciente");
+                        Console.WriteLine("2. Eliminar paciente");
+                        Console.WriteLine("Otro número para regresar al menú principal");
+                        Console.Write("Seleccione una opción: ");
+                        string subOpcion = Console.ReadLine();
+
+                        if (subOpcion == "1")
+                        {
+                            Console.Write("Nuevo nombre (deje vacío para no cambiar): ");
+                            string nuevoNombre = Console.ReadLine();
+                            if (!string.IsNullOrEmpty(nuevoNombre))
+                                pacienteBuscado.Nombre = nuevoNombre;
+
+                            Console.Write("Nueva edad (deje vacío para no cambiar): ");
+                            string nuevaEdad = Console.ReadLine();
+                            if (!string.IsNullOrEmpty(nuevaEdad) && byte.TryParse(nuevaEdad, out byte edadNueva))
+                                pacienteBuscado.Edad = edadNueva;
+
+                            Console.Write("Nuevos síntomas (deje vacío para no cambiar): ");
+                            string nuevosSintomas = Console.ReadLine();
+                            if (!string.IsNullOrEmpty(nuevosSintomas))
+                                pacienteBuscado.Sintomas = nuevosSintomas;
+
+                            Console.WriteLine("Paciente actualizado.");
+                        }
+                        else if (subOpcion == "2")
+                        {
+                            pacientesDic.Remove(idBuscar);
+                            Console.WriteLine("Paciente eliminado.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Regresando al menú principal.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("ID inválido o paciente no encontrado.");
+                    }
                     break;
 
                 case "salir":
-                    Console.WriteLine("Saliendo del programa...");
+                    Console.WriteLine("Saliendo...");
                     break;
 
                 default:
-                    Console.WriteLine("Opción no válida. Intente de nuevo.");
+                    Console.WriteLine("Opción no válida.");
                     break;
             }
 
-            if (opcion.ToLower() != "salir")
-            {
-                Console.WriteLine("\nPresione una tecla para continuar...");
-                Console.ReadKey();
-                Console.Clear();
-            }
+            Console.WriteLine();
         }
     }
 }
+
+public class Paciente
+{
+    public Guid Id { get; set; }
+    public string Nombre { get; set; }
+    public byte Edad { get; set; }
+    public string Sintomas { get; set; }
+}
+
