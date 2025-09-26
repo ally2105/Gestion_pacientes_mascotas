@@ -33,6 +33,8 @@ class Program
 
                     Console.Write("Síntomas: ");
                     nuevo.Sintomas = Console.ReadLine();
+                    Console.Write("Especie: ");
+                    nuevo.Especie = Console.ReadLine();
 
                     pacientesDic.Add(nuevo.Id, nuevo);
                     Console.WriteLine($"Paciente registrado con ID: {nuevo.Id}");
@@ -43,9 +45,37 @@ class Program
                     foreach (var kvp in pacientesDic)
                     {
                         var p = kvp.Value;
-                        Console.WriteLine($"ID: {p.Id}, Nombre: {p.Nombre}, Edad: {p.Edad}, Síntomas: {p.Sintomas}");
+                        Console.WriteLine($"ID: {p.Id}, Nombre: {p.Nombre}, Edad: {p.Edad}, Síntomas: {p.Sintomas} Especie: {p.Especie}");
+                    }
+
+                    Console.WriteLine("¿Quiere ver por edad de los pacientes? (si/no)");
+                    opcion = Console.ReadLine();
+                    if (opcion.ToLower() == "si")
+                    {
+                        Console.WriteLine("Ingrese la edad a filtrar:");
+                        byte edadFiltro = byte.Parse(Console.ReadLine());
+                        var resultado = pacientesDic.Where(kvp => kvp.Value.Edad == edadFiltro);
+                        foreach (var kvp in resultado)
+                        {
+                            var p = kvp.Value;
+                            Console.WriteLine($"ID: {p.Id}, Nombre: {p.Nombre}, Edad: {p.Edad}, Síntomas: {p.Sintomas} Especie: {p.Especie} ");
+                        }
+                    }
+                    Console.WriteLine("Quiere ver por especie de su mascota? (si/no)");
+                    opcion = Console.ReadLine();
+                    if (opcion.ToLower() == "si")
+                    {
+                        Console.WriteLine("Ingrese la especie a filtrar:");
+                        string especieFiltro = Console.ReadLine();
+                        var resultado = pacientesDic.Where(kvp => kvp.Value.Especie.Equals(especieFiltro, StringComparison.OrdinalIgnoreCase));
+                        foreach (var kvp in resultado)
+                        {
+                            var p = kvp.Value;
+                            Console.WriteLine($"ID: {p.Id}, Nombre: {p.Nombre}, Edad: {p.Edad}, Síntomas: {p.Sintomas}, Especie: {p.Especie}");
+                        }
                     }
                     break;
+
 
                 case "3":
                     Console.Write("Ingrese ID del paciente a buscar (copie y pegue el GUID): ");
@@ -54,7 +84,7 @@ class Program
                     if (Guid.TryParse(idInput, out Guid idBuscar) &&
                         pacientesDic.TryGetValue(idBuscar, out Paciente pacienteBuscado))
                     {
-                        Console.WriteLine($"ID: {pacienteBuscado.Id}, Nombre: {pacienteBuscado.Nombre}, Edad: {pacienteBuscado.Edad}, Síntomas: {pacienteBuscado.Sintomas}");
+                        Console.WriteLine($"ID: {pacienteBuscado.Id}, Nombre: {pacienteBuscado.Nombre}, Edad: {pacienteBuscado.Edad}, Síntomas: {pacienteBuscado.Sintomas} Especie: {pacienteBuscado.Especie}");
 
                         Console.WriteLine("1. Editar paciente");
                         Console.WriteLine("2. Eliminar paciente");
@@ -117,5 +147,6 @@ public class Paciente
     public string Nombre { get; set; }
     public byte Edad { get; set; }
     public string Sintomas { get; set; }
+    public string Especie { get; set; }
 }
 
