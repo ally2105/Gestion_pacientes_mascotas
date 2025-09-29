@@ -8,7 +8,8 @@ namespace Gestion_pacientes_mascotas.Models
     {
         public static void RegistrarPaciente(Dictionary<Guid, Paciente> pacientesDic)
         {
-            Console.WriteLine("===Bienvenido al sistema de registro de pacientes===");
+            Console.WriteLine("=== Registro de nuevo paciente ===");
+
             Console.Write("Ingrese el nombre del paciente: ");
             string nombre = Console.ReadLine();
 
@@ -29,6 +30,9 @@ namespace Gestion_pacientes_mascotas.Models
                 return;
             }
 
+            Console.Write("Ingrese la especie del paciente: ");
+            string especie = Console.ReadLine();
+
             Console.Write("Ingrese los síntomas del paciente: ");
             string sintomas = Console.ReadLine();
 
@@ -37,6 +41,7 @@ namespace Gestion_pacientes_mascotas.Models
                 Id = Guid.NewGuid(),
                 Nombre = nombre,
                 Edad = edad,
+                Especie = especie,
                 Sintomas = sintomas
             };
 
@@ -46,7 +51,7 @@ namespace Gestion_pacientes_mascotas.Models
 
         public static void VerPacientes(Dictionary<Guid, Paciente> pacientesDic)
         {
-            Console.WriteLine("===Lista de Pacientes Registrados exitosamente===");
+            Console.WriteLine("=== Lista de Pacientes Registrados ===");
 
             if (pacientesDic.Count == 0)
             {
@@ -59,6 +64,7 @@ namespace Gestion_pacientes_mascotas.Models
                 Console.WriteLine($"ID: {paciente.Id}");
                 Console.WriteLine($"Nombre: {paciente.Nombre}");
                 Console.WriteLine($"Edad: {paciente.Edad}");
+                Console.WriteLine($"Especie: {paciente.Especie}");
                 Console.WriteLine($"Síntomas: {paciente.Sintomas}");
                 Console.WriteLine("-------------------------------");
             }
@@ -79,13 +85,14 @@ namespace Gestion_pacientes_mascotas.Models
                 return;
             }
 
-            Console.WriteLine($"===Resultados de la búsqueda para '{nombreBusqueda}'===");
-
-            foreach (var paciente in pacientesEncontrados)
+            Console.WriteLine($"=== Resultados de la búsqueda para '{nombreBusqueda}' ===");
+            var result = pacientesEncontrados.OrderBy(p => p.Nombre).ToList();
+            foreach (var paciente in result)
             {
                 Console.WriteLine($"ID: {paciente.Id}");
                 Console.WriteLine($"Nombre: {paciente.Nombre}");
                 Console.WriteLine($"Edad: {paciente.Edad}");
+                Console.WriteLine($"Especie: {paciente.Especie}");
                 Console.WriteLine($"Síntomas: {paciente.Sintomas}");
                 Console.WriteLine("-------------------------------");
             }
