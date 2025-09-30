@@ -2,10 +2,50 @@ namespace Gestion_pacientes_mascotas.Models
 {
     public class Paciente
     {
+        private string direccion;
+        private string telefono;
+
         public string Nombre { get; set; }
-        public int Edad { get; set; }
-        public string Direccion { get; set; }
-        public string Telefono { get; set; }
+        
+        private int edad;
+        public int Edad
+        {
+            get { return edad; }
+            set
+            {
+                if (value >= 0)
+                    edad = value;
+                else
+                    throw new Exception("La edad no puede ser negativa");
+            }
+        }
+
+        // Propiedad con control para Direccion
+        public string Direccion
+        {
+            get { return direccion; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    direccion = value;
+                else
+                    throw new Exception("La dirección no puede estar vacía");
+            }
+        }
+
+        // Propiedad con validación para Telefono
+        public string Telefono
+        {
+            get { return telefono; }
+            set
+            {
+                if (value.Length == 10)
+                    telefono = value;
+                else
+                    throw new Exception("El teléfono debe tener 10 dígitos");
+            }
+        }
+
         public List<Mascota> Mascotas { get; set; }
 
         public Paciente(string nombre, int edad, string direccion, string telefono)
