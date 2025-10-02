@@ -1,10 +1,10 @@
 namespace Gestion_pacientes_mascotas.Models
 {
-    public class Animal
+    public abstract class Animal
     {
-        public string Nombre { get; set; }
-        public string Especie { get; set; }
-        public int Edad { get; set; }
+        public string Nombre { get; protected set; }
+        public string Especie { get; protected set; }
+        public int Edad { get; protected set; }
 
         public Animal(string nombre, string especie, int edad)
         {

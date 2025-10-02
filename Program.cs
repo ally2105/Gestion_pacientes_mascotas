@@ -7,7 +7,8 @@ class Program
 {
     static void Main()
     {
-        var pacientes = new List<Paciente>();
+    // Instancia de PacienteService
+    var pacienteService = new PacienteService();
         string opcion = "";
         while (opcion != "3")
         {
@@ -20,10 +21,10 @@ class Program
             switch (opcion)
             {
                 case "1":
-                    PacienteService.RegistrarPaciente(pacientes);
+                    pacienteService.Registrar();
                     break;
                 case "2":
-                    PacienteService.VerPacientes(pacientes);
+                    pacienteService.VerPacientes();
                     break;
                 case "3":
                     Console.WriteLine("Saliendo...");
