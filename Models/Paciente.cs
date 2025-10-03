@@ -2,6 +2,14 @@ namespace Gestion_pacientes_mascotas.Models;
 
 public class Paciente
 {
+    // Diseño: Paciente es un modelo de datos (POCO). No implementa IRegistrable
+    // porque el registro (entrada por consola, validación adicional, persistencia)
+    // se considera lógica de aplicación y está centralizada en PacienteService.
+    // Esto mantiene la entidad limpia y facilita pruebas y reutilización.
+
+    // Encapsulamiento: los campos sensibles (direccion, telefono) son privados
+    // y se exponen mediante propiedades con validación para evitar estados inválidos.
+
     private string direccion = string.Empty;
     private string telefono = string.Empty;
 

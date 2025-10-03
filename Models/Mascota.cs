@@ -23,7 +23,11 @@ namespace Gestion_pacientes_mascotas.Models
                 Dueno = dueno;
             }
 
-            public override void EmitirSonido()
+        // Mascota sobrescribe EmitirSonido para comportamientos específicos
+        // según la especie; esto demuestra polimorfismo: una referencia
+        // de tipo Animal puede invocar EmitirSonido y obtener distinto
+        // comportamiento según la subclase concreta.
+        public override void EmitirSonido()
             {
                 switch (Especie.ToLower())
                 {

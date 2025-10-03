@@ -2,6 +2,9 @@ namespace Gestion_pacientes_mascotas.Models
 {
     public abstract class Animal
     {
+        // Animal es abstracto porque representa un concepto general. Tenerlo
+        // como abstracto permite definir comportamiento por defecto y forzar
+        // a las subclases a sobrescribir (si es necesario) ciertos métodos.
         public string Nombre { get; protected set; }
         public string Especie { get; protected set; }
         public int Edad { get; protected set; }
@@ -13,7 +16,9 @@ namespace Gestion_pacientes_mascotas.Models
             Edad = edad;
         }
 
-        public  virtual void EmitirSonido()
+        // EmitirSonido tiene implementación por defecto; las mascotas sobrescriben
+        // este método para comportamientos específicos (polimorfismo).
+        public virtual void EmitirSonido()
         {
             Console.WriteLine("El animal emite un sonido.");
         }
