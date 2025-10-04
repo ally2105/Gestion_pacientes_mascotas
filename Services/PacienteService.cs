@@ -10,7 +10,9 @@ namespace Gestion_pacientes_mascotas.Models
 
         public void Registrar()
         {
-            Console.WriteLine("=== Registro de nuevo paciente ===");
+            try
+            {
+                Console.WriteLine("=== Registro de nuevo paciente ===");
             Console.Write("Ingrese el nombre del paciente: ");
             string nombre = Console.ReadLine() ?? "";
 
@@ -104,18 +106,37 @@ namespace Gestion_pacientes_mascotas.Models
             }
 
             // 🔹 Solo agregamos el paciente UNA vez
-            pacientes.Add(nuevoPaciente);
-            Console.WriteLine("✅ Paciente registrado exitosamente.");
+                pacientes.Add(nuevoPaciente);
+                Console.WriteLine("✅ Paciente registrado exitosamente.");
 
 #if DEBUG
-            // Modo debug: preguntar si queremos forzar un error para practicar depuración
-            Console.WriteLine("¿Forzar error de depuración? (si/no)");
-            var respuestaError = Console.ReadLine() ?? "no";
-            if (respuestaError.Trim().ToLower() == "si")
-            {
-                ForzarErrorParaDepuracion();
-            }
+                // Modo debug: preguntar si queremos forzar un error para practicar depuración
+                Console.WriteLine("¿Forzar error de depuración? (si/no)");
+                var respuestaError = Console.ReadLine() ?? "no";
+                if (respuestaError.Trim().ToLower() == "si")
+                {
+                    ForzarErrorParaDepuracion();
+                }
 #endif
+            }
+            catch (MascotaNoEncontradaException mex)
+            {
+                // Excepción de negocio: informar claramente
+                Console.WriteLine($"⚠️ Mascota no encontrada: {mex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // No silenciamos excepciones: logueamos y mostramos mensaje al usuario
+                Console.WriteLine("❌ Ocurrió un error durante el registro. Verifique su entrada e intente nuevamente.");
+                Console.WriteLine($"Detalles (para desarrolladores): {ex.Message}");
+                // En un sistema real aquí registraríamos en un logger estructurado.
+            }
+            finally
+            {
+                // Acción que siempre se debe ejecutar (si hubiera recursos a liberar)
+                // Por ahora: pequeña pausa para mejorar la experiencia de consola
+                Console.WriteLine("(Registro finalizado)\n");
+            }
         }
 
 #if DEBUG
@@ -190,6 +211,21 @@ namespace Gestion_pacientes_mascotas.Models
                 paciente.MostrarMascotas();
                 Console.WriteLine("-------------------------------");
             }
+        }
+
+        // Busca una mascota por nombre en todos los pacientes y lanza una excepción personalizada si no existe
+        public Mascota BuscarMascota(string nombreMascota)
+        {
+            if (string.IsNullOrWhiteSpace(nombreMascota))
+                throw new ArgumentException("El nombre de la mascota no puede estar vacío.", nameof(nombreMascota));
+
+            var encontrada = pacientes.SelectMany(p => p.Mascotas)
+                                      .FirstOrDefault(m => m.Nombre.Equals(nombreMascota, StringComparison.OrdinalIgnoreCase));
+
+            if (encontrada == null)
+                throw new MascotaNoEncontradaException($"No se encontró ninguna mascota con el nombre '{nombreMascota}'.");
+
+            return encontrada;
         }
     }
 }

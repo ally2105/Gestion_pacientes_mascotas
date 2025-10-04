@@ -10,12 +10,13 @@ class Program
     // Instancia de PacienteService
     var pacienteService = new PacienteService();
         string opcion = "";
-        while (opcion != "4")
+        while (opcion != "5")
         {
             Console.WriteLine("1. Registrar paciente y mascotas");
             Console.WriteLine("2. Ver pacientes y sus mascotas");
             Console.WriteLine("3. Demo polimorfismo: Emitir sonidos");
-            Console.WriteLine("4. Salir");
+            Console.WriteLine("4. Buscar mascota por nombre (lanza excepción personalizada si no existe)");
+            Console.WriteLine("5. Salir");
             
             Console.Write("Seleccione una opción: ");
             opcion = Console.ReadLine() ?? "";
@@ -32,6 +33,25 @@ class Program
                     DemoPolimorfismo();
                     break;
                 case "4":
+                    Console.Write("Ingrese el nombre de la mascota a buscar: ");
+                    var nombreMascota = Console.ReadLine() ?? "";
+                    try
+                    {
+                        var encontrada = pacienteService.BuscarMascota(nombreMascota);
+                        Console.WriteLine("Mascota encontrada:");
+                        encontrada.MostrarInformacion();
+                    }
+                    catch (Gestion_pacientes_mascotas.Models.MascotaNoEncontradaException mex)
+                    {
+                        Console.WriteLine($"⚠️ {mex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("❌ Ocurrió un error inesperado al buscar la mascota.");
+                        Console.WriteLine($"Detalles: {ex.Message}");
+                    }
+                    break;
+                case "5":
                     Console.WriteLine("Saliendo...");
                     break;
                 default:
