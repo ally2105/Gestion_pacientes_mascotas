@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gestion_pacientes_mascotas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a41132e7bae933b39dfd31d31716554fd9436284")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb07438d5b2c15280ac98f1fb4c815300b046f59")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gestion_pacientes_mascotas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gestion_pacientes_mascotas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

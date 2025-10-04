@@ -123,13 +123,15 @@ namespace Gestion_pacientes_mascotas.Models
             {
                 // Excepción de negocio: informar claramente
                 Console.WriteLine($"⚠️ Mascota no encontrada: {mex.Message}");
+                Gestion_pacientes_mascotas.Utils.Logger.LogWarning(mex.Message, "PacienteService.Registrar");
             }
             catch (Exception ex)
             {
                 // No silenciamos excepciones: logueamos y mostramos mensaje al usuario
                 Console.WriteLine("❌ Ocurrió un error durante el registro. Verifique su entrada e intente nuevamente.");
                 Console.WriteLine($"Detalles (para desarrolladores): {ex.Message}");
-                // En un sistema real aquí registraríamos en un logger estructurado.
+                // Registrar en archivo para soporte técnico
+                Gestion_pacientes_mascotas.Utils.Logger.LogError(ex, "PacienteService.Registrar");
             }
             finally
             {
