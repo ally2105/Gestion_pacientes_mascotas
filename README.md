@@ -1,76 +1,62 @@
 # Gestion_pacientes_mascotas
 
-Este repositorio contiene un pequeño sistema para gestionar pacientes y
-sus mascotas. Aquí se documentan decisiones de diseño relacionadas con el
-uso de clases abstractas e interfaces, ejemplos prácticos y recomendaciones.
+Pequeña consola en C# para gestionar pacientes y sus mascotas (POCOs + servicios).
 
-## Diferencia entre clase abstracta e interfaz
+Resumen rápido
+- Lenguaje: C# (.NET). Proyecto: `Gestion_pacientes_mascotas.csproj`.
+- Estructura relevante:
+  - `Models/` — entidades: `Paciente`, `Mascota`, `Animal`.
+  - `Services/` — lógica de aplicación: `PacienteService`, `MascotaService`, `ServicioVeterinario`.
+  - `Interfaces/` — contratos: `IRegistrable`, `IAtendible`, `INotificable`.
+  - `Utils/Logger.cs` — logger minimalista que escribe en `logs/error.log`.
 
-- Clase abstracta:
-	- Puede contener implementación compartida y campos protegidos.
-	- Útil cuando hay comportamiento común que varias subclases deben heredar.
-	- Se usa cuando se desea proporcionar estado o métodos con implementación.
+Cómo ejecutar
+1. Restaurar paquetes y compilar:
 
-- Interfaz:
-	- Define solo el contrato (métodos, propiedades), sin implementación.
-	- Permite múltiples implementaciones y es ideal para desacoplar componentes.
-	- Facilita tests y la inyección de dependencias.
-
-## Qué se usó en este proyecto y por qué
-
-- `Animal` (en `Models/Animal.cs`) es una clase abstracta: representa un
-	concepto general (nombre, especie, edad) y proporciona `EmitirSonido()` con
-	implementación por defecto; las subclases (p. ej. `Mascota`) sobrescriben
-	este método para comportamientos particulares (polimorfismo).
-
-- `ServicioVeterinario` (en `Services/ServicioVeterinario.cs`) es abstracta
-	porque puede contener lógica o estado compartido en el futuro y fuerza a
-	las subclases a implementar `Atender()`.
-
-- `IRegistrable` (en `Models/IRegistrable.cs`) es una interfaz que define el
-	contrato `Registrar()`. Se implementa en los servicios (`PacienteService`,
-	`MascotaService`) para permitir múltiples estrategias de registro
-	(memoria, persistencia, API) y facilitar pruebas.
-
-## Dónde una interfaz aporta mayor flexibilidad
-
-- Servicios de registro (Paciente/Mascota): usar `IRegistrable` permite pasar
-	diferentes implementaciones según el entorno (tests, producción, mocks).
-
-- Repositorios o adaptadores: si más adelante añades una capa de persistencia,
-	define `IRepository<T>` y crea implementaciones para la base de datos o para
-	una versión en memoria usada en tests.
-
-## Ejemplos prácticos
-
-- Polimorfismo con `EmitirSonido()` (en `Program.cs` puedes crear):
-
-```csharp
-var animales = new List<Animal>
-{
-		new Mascota("Firulais", "Perro", "Labrador", 5, "Juan"),
-		new Mascota("Misu", "Gato", "Siames", 3, "Ana")
-};
-foreach (var a in animales)
-		a.EmitirSonido(); // Guau, Miau
+```bash
+dotnet build
 ```
 
-- Registro centralizado (ya implementado en `Services/PacienteService.cs`):
-	la entrada por consola y la construcción de objetos ocurren dentro del
-	servicio; las entidades (`Paciente`, `Mascota`) se mantienen como POCOs.
+2. Ejecutar la aplicación:
 
-## Recomendaciones
+```bash
+dotnet run --project Gestion_pacientes_mascotas.csproj
+```
 
-- Mantén la lógica de E/S y validación en servicios; las entidades deben ser
-	modelos de datos limpios.
-- Añade interfaces para puntos de extensión (servicios, repositorios) para
-	facilitar la inyección de dependencias y testing.
-- Usa clases abstractas para compartir código entre subclases cuando exista
-	comportamiento común.
+Puntos de diseño y por qué
+- Entidades limpias (POCOs): `Paciente` y `Mascota` no contienen I/O; ayudan a testabilidad.
+- Servicios: contienen la lógica de E/S, validaciones y operaciones (p. ej. `PacienteService.Registrar()`).
+- Interfaces: usadas para desacoplar y permitir múltiples implementaciones (tests, persistencia).
+- Abstractas (p. ej. `Animal`, `ServicioVeterinario`): proporcionan comportamiento compartido y contrato para subclases.
+
+Depuración y pruebas manuales
+- Breakpoints útiles:
+  - `Program.cs`: en la creación de `PacienteService` y en la llamada a `Registrar()`.
+  - `Services/PacienteService.cs`: inicio de `Registrar()`, después de validar `edad`, después de crear `nuevoPaciente`, y justo antes de `pacientes.Add(...)`.
+- Forzar error para practicar depuración: en modo DEBUG la aplicación pregunta si deseas forzar un DivideByZeroException durante el registro (útil para ver manejo de excepciones y stack trace).
+
+Registro de errores (logging)
+- Archivo: `logs/error.log` (creado por `Utils/Logger.cs`).
+- Uso en código: `Logger.LogError(ex, "Contexto")`, `Logger.LogWarning("Mensaje")`.
+- En un entorno real: usar Serilog/NLog/Microsoft.Extensions.Logging, configurar rotación, sinks y correlación (RequestId).
+
+Buenas prácticas implementadas
+- Validaciones robustas de entrada (int.TryParse, comprobaciones de cadenas, etc.).
+- Manejo de excepciones con `try-catch-finally` en puntos críticos; los catches no silencian errores: los registran y muestran mensajes útiles al usuario.
+- Excepciones personalizadas: `MascotaNoEncontradaException` para casos de negocio específicos.
+
+Siguientes pasos recomendados
+- Extraer la lógica de persistencia a un `IRepository<T>` y proporcionar una implementación en memoria + una con EF Core.
+- Reemplazar `Utils/Logger` por Serilog con sinks para archivo y (opcional) ElasticSearch/Seq.
+- Añadir tests unitarios para `PacienteService` y `Mascota`.
+
+Contacto y soporte
+- Para reproducir un error: ejecutar, anotar la hora y revisar `logs/error.log`.
+- En un entorno de soporte técnico, provee el fragmento de log (timestamp + stack trace) para acelerar el diagnóstico.
 
 ---
 
 Si quieres, puedo:
-- Añadir el snippet de polimorfismo directamente a `Program.cs`.
-- Crear un `IRepository<T>` y ejemplo de implementación en memoria.
-- Generar tests unitarios básicos.
+- Añadir `IRepository<T>` de ejemplo.
+- Integrar Serilog y configurar rotación de logs.
+- Crear tests unitarios básicos con xUnit/NUnit.
