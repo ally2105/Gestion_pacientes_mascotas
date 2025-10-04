@@ -106,7 +106,28 @@ namespace Gestion_pacientes_mascotas.Models
             // 🔹 Solo agregamos el paciente UNA vez
             pacientes.Add(nuevoPaciente);
             Console.WriteLine("✅ Paciente registrado exitosamente.");
+
+#if DEBUG
+            // Modo debug: preguntar si queremos forzar un error para practicar depuración
+            Console.WriteLine("¿Forzar error de depuración? (si/no)");
+            var respuestaError = Console.ReadLine() ?? "no";
+            if (respuestaError.Trim().ToLower() == "si")
+            {
+                ForzarErrorParaDepuracion();
+            }
+#endif
         }
+
+#if DEBUG
+        // Método que fuerza una excepción DivideByZero para practicar el flujo de depuración
+        private void ForzarErrorParaDepuracion()
+        {
+            int cero = 0;
+            // Punto de quiebre interesante: la siguiente línea lanza DivideByZeroException
+            int resultado = 1 / cero;
+            Console.WriteLine($"Resultado (no debería verse): {resultado}");
+        }
+#endif
 
         public void VerPacientes()
         {

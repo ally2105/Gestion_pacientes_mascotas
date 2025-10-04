@@ -1,6 +1,8 @@
 namespace Gestion_pacientes_mascotas.Models;
 
-public class Paciente
+using Gestion_pacientes_mascotas.Interfaces;
+
+public class Paciente : INotificable
 {
     // Diseño: Paciente es un modelo de datos (POCO). No implementa IRegistrable
     // porque el registro (entrada por consola, validación adicional, persistencia)
@@ -65,7 +67,11 @@ public class Paciente
 
     public void MostrarInformacion()
     {
-        Console.WriteLine($"Nombre: {Nombre}\nEdad: {Edad}\nDirección: {Direccion}\nTeléfono: {Telefono}");
+        // Mostrar información básica; por seguridad no revelamos el teléfono completo en la salida
+        Console.WriteLine($"Nombre: {Nombre}");
+        Console.WriteLine($"Edad: {Edad}");
+        Console.WriteLine($"Dirección: {Direccion}");
+        Console.WriteLine($"Teléfono: {ObfuscarTelefono(Telefono)}");
     }
 
     public void MostrarMascotas()
@@ -81,6 +87,23 @@ public class Paciente
             mascota.MostrarInformacion();
             Console.WriteLine("---");
         }
+    }
+
+    // Implementación simple de INotificable.
+    // En una aplicación real esto delegaría a un servicio externo (SMS/Email) para mantener SRP.
+    public void EnviarNotificacion(string mensaje)
+    {
+        var telefonoVisible = ObfuscarTelefono(Telefono);
+        Console.WriteLine($"[Notificación] Enviando a {Nombre} ({telefonoVisible}): {mensaje}");
+    }
+
+    private string ObfuscarTelefono(string telefono)
+    {
+        if (string.IsNullOrWhiteSpace(telefono)) return "(sin número)";
+        var digits = telefono.Trim();
+        if (digits.Length <= 2) return new string('*', digits.Length);
+        var visible = digits.Substring(digits.Length - 2);
+        return new string('*', digits.Length - 2) + visible;
     }
 }
 
