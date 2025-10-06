@@ -1,3 +1,5 @@
+using System;
+
 namespace Gestion_pacientes_mascotas.Models
 {
     public abstract class Animal
@@ -5,9 +7,12 @@ namespace Gestion_pacientes_mascotas.Models
         // Animal es abstracto porque representa un concepto general. Tenerlo
         // como abstracto permite definir comportamiento por defecto y forzar
         // a las subclases a sobrescribir (si es necesario) ciertos métodos.
-        public string Nombre { get; protected set; }
-        public string Especie { get; protected set; }
-        public int Edad { get; protected set; }
+    // Hacemos los setters públicos para permitir edición desde servicios.
+    // En aplicaciones más estrictas se preferiría exponer métodos de modificación
+    // en la entidad para mantener invariantes.
+    public string Nombre { get; set; }
+    public string Especie { get; set; }
+    public int Edad { get; set; }
 
         public Animal(string nombre, string especie, int edad)
         {

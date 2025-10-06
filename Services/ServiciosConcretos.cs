@@ -1,3 +1,5 @@
+using System;
+
 namespace Gestion_pacientes_mascotas.Models
 {
     // Implementan tanto la clase abstracta como la interfaz IAtendible.

@@ -1,0 +1,14 @@
+[2025-10-06T22:11:52.7161404Z] ERROR PacienteService.Registrar
+Type: System.DivideByZeroException
+Message: Attempted to divide by zero.
+StackTrace:
+   at Gestion_pacientes_mascotas.Models.PacienteService.ForzarErrorParaDepuracion() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 150
+   at Gestion_pacientes_mascotas.Models.PacienteService.Registrar() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 118
+--------------------------------------------------------------------------------
+[2025-10-06T22:20:31.7534559Z] ERROR PacienteService.Registrar
+Type: System.DivideByZeroException
+Message: Attempted to divide by zero.
+StackTrace:
+   at Gestion_pacientes_mascotas.Models.PacienteService.ForzarErrorParaDepuracion() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 144
+   at Gestion_pacientes_mascotas.Models.PacienteService.Registrar() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 99
+--------------------------------------------------------------------------------

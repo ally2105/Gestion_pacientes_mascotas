@@ -7,17 +7,18 @@ class Program
 {
     static void Main()
     {
-    // Instancia de PacienteService
+    // Instancias de servicios
     var pacienteService = new PacienteService();
+    var mascotaService = new MascotaService();
         string opcion = "";
         while (opcion != "5")
         {
             Console.WriteLine("1. Registrar paciente y mascotas");
             Console.WriteLine("2. Ver pacientes y sus mascotas");
-            Console.WriteLine("3. Demo polimorfismo: Emitir sonidos");
-            Console.WriteLine("4. Buscar mascota por nombre (lanza excepción personalizada si no existe)");
+            Console.WriteLine("3. Mascotas haciendo sonidos");
+            Console.WriteLine("4. Buscar mascota por nombre");
             Console.WriteLine("5. Salir");
-            
+
             Console.Write("Seleccione una opción: ");
             opcion = Console.ReadLine() ?? "";
 
@@ -28,6 +29,61 @@ class Program
                     break;
                 case "2":
                     pacienteService.VerPacientes();
+                    // Submenu para administrar mascotas (usa mascotaService local)
+                    while (true)
+                    {
+                        Console.WriteLine("--- Menú mascotas ---");
+                        Console.WriteLine("Escriba a para editar una mascota");
+                        Console.WriteLine("Escriba b para eliminar una mascota");
+                        Console.WriteLine("Escriba c para buscar una mascota por nombre");
+                        Console.WriteLine("Escriba salir para volver al menú principal");
+                        Console.Write("Opción mascotas: ");
+                        var sub = (Console.ReadLine() ?? "").Trim().ToLower();
+
+                        if (sub == "a")
+                        {
+                            mascotaService.VerMascotas();
+                            Console.Write("Nombre de la mascota a editar: ");
+                            var nombre = Console.ReadLine() ?? "";
+                            var m = mascotaService.Mascotas.FirstOrDefault(x => x.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+                            if (m != null)
+                                mascotaService.EditarMascota(m);
+                            else
+                                Console.WriteLine("Mascota no encontrada en el registro local de mascotas.");
+                        }
+                        else if (sub == "b")
+                        {
+                            mascotaService.VerMascotas();
+                            Console.Write("Nombre de la mascota a eliminar: ");
+                            var nombre = Console.ReadLine() ?? "";
+                            var m = mascotaService.Mascotas.FirstOrDefault(x => x.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+                            if (m != null)
+                                mascotaService.EliminarMascota(m);
+                            else
+                                Console.WriteLine("Mascota no encontrada en el registro local de mascotas.");
+                        }
+                        else if (sub == "c")
+                        {
+                            Console.Write("Nombre de la mascota a buscar: ");
+                            var nombre = Console.ReadLine() ?? "";
+                            var m = mascotaService.Mascotas.FirstOrDefault(x => x.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+                            if (m != null)
+                            {
+                                Console.WriteLine("Mascota encontrada:");
+                                m.MostrarInformacion();
+                            }
+                            else
+                                Console.WriteLine("Mascota no encontrada en el registro local de mascotas.");
+                        }
+                        else if (sub == "salir")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Opción no válida, intente de nuevo.");
+                        }
+                    }
                     break;
                 case "3":
                     DemoPolimorfismo();
