@@ -99,7 +99,7 @@ namespace Gestion_pacientes_mascotas.Models
                         }
                     }
 
-                    Mascota mascota = new Mascota(nombreMascota, especieMascota, razaMascota, edadMascota, nuevoPaciente.Nombre);
+                    Mascota mascota = new Mascota(Guid.NewGuid(),nombreMascota, especieMascota, razaMascota, edadMascota, nuevoPaciente.Nombre);
                     nuevoPaciente.Mascotas.Add(mascota);
 
                     Console.WriteLine("¿Desea agregar otra mascota? (si/no)");

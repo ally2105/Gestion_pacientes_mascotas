@@ -22,7 +22,7 @@ namespace Gestion_pacientes_mascotas.Models
             Console.Write("Dueño: ");
             string dueno = Console.ReadLine() ?? "";
 
-            Mascota mascota = new Mascota(nombre, especie, raza, edad, dueno);
+            Mascota mascota = new Mascota(Guid.NewGuid(),nombre, especie, raza, edad, dueno);
             Mascotas.Add(mascota);
 
             Console.WriteLine("Mascota registrada exitosamente.");

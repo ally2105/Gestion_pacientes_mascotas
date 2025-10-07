@@ -121,9 +121,9 @@ class Program
     {
         var animales = new List<Animal>
         {
-            new Mascota("Firulais", "Perro", "Labrador", 5, "Juan"),
-            new Mascota("Misu", "Gato", "Siames", 3, "Ana"),
-            new Mascota("Paco", "Pájaro", "Canario", 1, "Luis")
+            new Mascota(Guid.NewGuid(),"Firulais", "Perro", "Labrador", 5, "Juan"),
+            new Mascota(Guid.NewGuid(),"Misu", "Gato", "Siames", 3, "Ana"),
+            new Mascota(Guid.NewGuid(),"Paco", "Pájaro", "Canario", 1, "Luis")
         };
 
         Console.WriteLine("Demostración de polimorfismo: EmitirSonido() de cada animal");
