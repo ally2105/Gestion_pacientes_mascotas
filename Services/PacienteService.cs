@@ -7,6 +7,8 @@ namespace Gestion_pacientes_mascotas.Models
     public class PacienteService : IRegistrable
     {
         private List<Paciente> pacientes = new List<Paciente>();
+        // Enlace opcional al servicio global de mascotas para sincronizar registros
+        public MascotaService? MascotaService { get; set; }
 
         public void Registrar()
         {
@@ -101,6 +103,8 @@ namespace Gestion_pacientes_mascotas.Models
 
                     Mascota mascota = new Mascota(Guid.NewGuid(),nombreMascota, especieMascota, razaMascota, edadMascota, nuevoPaciente.Nombre);
                     nuevoPaciente.Mascotas.Add(mascota);
+                    // Si hay un servicio global de mascotas, también registramos la mascota allí
+                    MascotaService?.Mascotas.Add(mascota);
 
                     Console.WriteLine("¿Desea agregar otra mascota? (si/no)");
                     respuestaMascotas = Console.ReadLine() ?? "no";
@@ -168,22 +172,23 @@ namespace Gestion_pacientes_mascotas.Models
             }
         }
 
-        // Eliminadas versiones estáticas duplicadas de VerPacientes y BuscarPaciente
-        // para evitar código redundante. Use los métodos de instancia en su lugar.
-
-        // Busca una mascota por nombre en todos los pacientes y lanza una excepción personalizada si no existe
-        public Mascota BuscarMascota(string nombreMascota)
+        // Remueve la asociación de una mascota de cualquier paciente que la tenga.
+        // Nota: las operaciones de búsqueda/edición/eliminación de la entidad Mascota
+        // deben realizarse en MascotaService. Este método solo limpia la referencia
+        // en la lista de mascotas de los pacientes para mantener consistencia.
+        public void RemoverAsociacionMascota(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(nombreMascota))
-                throw new ArgumentException("El nombre de la mascota no puede estar vacío.", nameof(nombreMascota));
-
-            var encontrada = pacientes.SelectMany(p => p.Mascotas)
-                                      .FirstOrDefault(m => m.Nombre.Equals(nombreMascota, StringComparison.OrdinalIgnoreCase));
-
-            if (encontrada == null)
-                throw new MascotaNoEncontradaException($"No se encontró ninguna mascota con el nombre '{nombreMascota}'.");
-
-            return encontrada;
+            foreach (var paciente in pacientes)
+            {
+                var m = paciente.Mascotas.FirstOrDefault(x => x.Id == id);
+                if (m != null)
+                {
+                    paciente.Mascotas.Remove(m);
+                    Console.WriteLine($"Asociación: mascota con Id {id} removida del paciente {paciente.Nombre}.");
+                    return;
+                }
+            }
+            // No es un error crítico que no exista la asociación: simplemente no hacemos nada
         }
     }
 }

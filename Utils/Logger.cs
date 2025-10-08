@@ -12,7 +12,7 @@ namespace Gestion_pacientes_mascotas.Utils
         private static readonly string _logDir = Path.Combine(AppContext.BaseDirectory, "logs");
         private static readonly string _errorFile = Path.Combine(_logDir, "error.log");
 
-        public static void LogError(Exception ex, string context = null)
+    public static void LogError(Exception ex, string? context = null)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Gestion_pacientes_mascotas.Utils
             }
         }
 
-        public static void LogWarning(string message, string context = null)
+    public static void LogWarning(string message, string? context = null)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Gestion_pacientes_mascotas.Utils
             catch { }
         }
 
-        public static void LogInfo(string message, string context = null)
+    public static void LogInfo(string message, string? context = null)
         {
             try
             {
