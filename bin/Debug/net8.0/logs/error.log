@@ -12,3 +12,5 @@ StackTrace:
    at Gestion_pacientes_mascotas.Models.PacienteService.ForzarErrorParaDepuracion() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 144
    at Gestion_pacientes_mascotas.Models.PacienteService.Registrar() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 99
 --------------------------------------------------------------------------------
+[2025-10-08T23:47:33.8196146Z] INFO PacienteService.Registrar - Paciente registrado: Anita
+[2025-10-08T23:49:00.6243493Z] INFO PacienteService.Registrar - Paciente registrado: allison

@@ -1,14 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using Gestion_pacientes_mascotas.Database;
+using Gestion_pacientes_mascotas.Utils;
 
 namespace Gestion_pacientes_mascotas.Models
 {
     public class PacienteService : IRegistrable
     {
-        private List<Paciente> pacientes = new List<Paciente>();
+        private readonly DataContext _context;
         // Enlace opcional al servicio global de mascotas para sincronizar registros
         public MascotaService? MascotaService { get; set; }
+
+        public PacienteService(DataContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
         public void Registrar()
         {
@@ -18,14 +25,13 @@ namespace Gestion_pacientes_mascotas.Models
                 Console.Write("Ingrese el nombre del paciente: ");
                 string nombre = Console.ReadLine() ?? "";
 
-                // 🔹 Validación robusta para la edad del paciente
                 int edad;
                 while (true)
                 {
                     Console.Write("Ingrese la edad del paciente: ");
                     if (int.TryParse(Console.ReadLine(), out edad) && edad >= 0)
                     {
-                        break; // válido → salimos del bucle
+                        break;
                     }
                     else
                     {
@@ -51,12 +57,12 @@ namespace Gestion_pacientes_mascotas.Models
                     telefono = Console.ReadLine() ?? "";
                 }
 
-                Paciente nuevoPaciente = new Paciente(nombre, edad, direccion, telefono);
+                var nuevoPaciente = new Paciente(nombre, edad, direccion, telefono);
 
-                // 🔹 Registro de mascotas
+                // Registro de mascotas vinculadas (opcional)
                 Console.WriteLine("¿Desea agregar mascotas para este paciente? (si/no)");
                 string respuestaMascotas = Console.ReadLine() ?? "no";
-                while (respuestaMascotas.ToLower() == "si")
+                while (respuestaMascotas.Trim().ToLower() == "si")
                 {
                     Console.Write("Nombre de la mascota: ");
                     string nombreMascota = Console.ReadLine() ?? "";
@@ -85,36 +91,31 @@ namespace Gestion_pacientes_mascotas.Models
                         razaMascota = Console.ReadLine() ?? "";
                     }
 
-                    // 🔹 Validación robusta para la edad de la mascota
                     int edadMascota;
                     while (true)
                     {
                         Console.Write("Edad: ");
                         if (int.TryParse(Console.ReadLine(), out edadMascota) && edadMascota >= 0)
-                        {
-                            break; // salir cuando es válido
-                        }
-                        else
-                        {
-
-                            Console.WriteLine("⚠️ Error: La edad debe ser un número válido y mayor o igual a 0.");
-                        }
+                            break;
+                        Console.WriteLine("⚠️ Error: La edad debe ser un número válido y mayor o igual a 0.");
                     }
 
-                    Mascota mascota = new Mascota(Guid.NewGuid(),nombreMascota, especieMascota, razaMascota, edadMascota, nuevoPaciente.Nombre);
+                    var mascota = new Mascota(Guid.NewGuid(), nombreMascota, especieMascota, razaMascota, edadMascota, nuevoPaciente.Nombre);
                     nuevoPaciente.Mascotas.Add(mascota);
-                    // Si hay un servicio global de mascotas, también registramos la mascota allí
-                    MascotaService?.Mascotas.Add(mascota);
+
+                    // Agregar la mascota al DataContext (fuente única)
+                    _context.Mascotas.Add(mascota);
 
                     Console.WriteLine("¿Desea agregar otra mascota? (si/no)");
                     respuestaMascotas = Console.ReadLine() ?? "no";
                 }
 
-                // 🔹 Solo agregamos el paciente UNA vez
-                pacientes.Add(nuevoPaciente);
+                // Agregar paciente al contexto
+                _context.Pacientes.Add(nuevoPaciente);
+                Logger.LogInfo($"Paciente registrado: {nuevoPaciente.Nombre}", "PacienteService.Registrar");
                 Console.WriteLine("✅ Paciente registrado exitosamente.");
+
 #if DEBUG
-                // Modo debug: preguntar si queremos forzar un error para practicar depuración
                 Console.WriteLine("¿Desea forzar un error para practicar depuración? (si /no)");
                 string forzarError = Console.ReadLine() ?? "no";
                 if (forzarError.ToLower() == "si")
@@ -125,32 +126,25 @@ namespace Gestion_pacientes_mascotas.Models
             }
             catch (MascotaNoEncontradaException mex)
             {
-                // Excepción de negocio: informar claramente
                 Console.WriteLine($"⚠️ Mascota no encontrada: {mex.Message}");
-                Gestion_pacientes_mascotas.Utils.Logger.LogWarning(mex.Message, "PacienteService.Registrar");
+                Logger.LogWarning(mex.Message, "PacienteService.Registrar");
             }
             catch (Exception ex)
             {
-                // No silenciamos excepciones: logueamos y mostramos mensaje al usuario
                 Console.WriteLine("❌ Ocurrió un error durante el registro. Verifique su entrada e intente nuevamente.");
                 Console.WriteLine($"Detalles (para desarrolladores): {ex.Message}");
-                // Registrar en archivo para soporte técnico
-                Gestion_pacientes_mascotas.Utils.Logger.LogError(ex, "PacienteService.Registrar");
+                Logger.LogError(ex, "PacienteService.Registrar");
             }
             finally
             {
-                // Acción que siempre se debe ejecutar (si hubiera recursos a liberar)
-                // Por ahora: pequeña pausa para mejorar la experiencia de consola
                 Console.WriteLine("(Registro finalizado)\n");
             }
         }
 
 #if DEBUG
-        // Método que fuerza una excepción DivideByZero para practicar el flujo de depuración
         private void ForzarErrorParaDepuracion()
         {
             int cero = 0;
-            // Punto de quiebre interesante: la siguiente línea lanza DivideByZeroException
             int resultado = 1 / cero;
             Console.WriteLine($"Resultado (no debería verse): {resultado}");
         }
@@ -159,12 +153,12 @@ namespace Gestion_pacientes_mascotas.Models
         public void VerPacientes()
         {
             Console.WriteLine("=== Lista de Pacientes Registrados ===");
-            if (pacientes.Count == 0)
+            if (!_context.Pacientes.Any())
             {
                 Console.WriteLine("No hay pacientes registrados.");
                 return;
             }
-            foreach (var paciente in pacientes)
+            foreach (var paciente in _context.Pacientes)
             {
                 paciente.MostrarInformacion();
                 paciente.MostrarMascotas();
@@ -173,12 +167,9 @@ namespace Gestion_pacientes_mascotas.Models
         }
 
         // Remueve la asociación de una mascota de cualquier paciente que la tenga.
-        // Nota: las operaciones de búsqueda/edición/eliminación de la entidad Mascota
-        // deben realizarse en MascotaService. Este método solo limpia la referencia
-        // en la lista de mascotas de los pacientes para mantener consistencia.
         public void RemoverAsociacionMascota(Guid id)
         {
-            foreach (var paciente in pacientes)
+            foreach (var paciente in _context.Pacientes)
             {
                 var m = paciente.Mascotas.FirstOrDefault(x => x.Id == id);
                 if (m != null)
@@ -188,7 +179,6 @@ namespace Gestion_pacientes_mascotas.Models
                     return;
                 }
             }
-            // No es un error crítico que no exista la asociación: simplemente no hacemos nada
         }
     }
 }
