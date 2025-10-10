@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿
 using Gestion_pacientes_mascotas.Database;
 using Gestion_pacientes_mascotas.Models;
+using Gestion_pacientes_mascotas.Services;
 using Gestion_pacientes_mascotas.Utils;
 
 namespace Gestion_pacientes_mascotas
@@ -12,27 +12,36 @@ namespace Gestion_pacientes_mascotas
         {
             Console.Title = "🐾 Clínica Veterinaria - Gestión de Pacientes y Mascotas 🐶🐱";
 
-            // Crear contexto compartido
+            // ==========================================================
+            // CONTEXTO COMPARTIDO
+            // ==========================================================
             var context = new DataContext();
 
-            // Crear servicios
+            // ==========================================================
+            // CREACIÓN DE SERVICIOS
+            // ==========================================================
             var pacienteService = new PacienteService(context);
             var mascotaService = new MascotaService(context, pacienteService);
             var citaService = new CitaService(context);
+            var veterinarioService = new VeterinarioService(); // ✅ Servicio corregido
+
+            // Vincular dependencias
             pacienteService.MascotaService = mascotaService;
 
-            // Semillas iniciales de veterinarios
-            context.Veterinarios.Add(new Veterinario("Dra. Ana López", "Medicina General", "3001112233", "ana@vet.com"));
-            context.Veterinarios.Add(new Veterinario("Dr. Carlos Ruiz", "Cirugía", "3002223344", "carlos@vet.com"));
-
-            MostrarMenuPrincipal(pacienteService, mascotaService, citaService, context);
+            // ==========================================================
+            // MENÚ PRINCIPAL
+            // ==========================================================
+            MostrarMenuPrincipal(pacienteService, mascotaService, citaService, veterinarioService);
         }
 
+        // ==========================================================
+        // MENÚ PRINCIPAL
+        // ==========================================================
         private static void MostrarMenuPrincipal(
             PacienteService pacienteService,
             MascotaService mascotaService,
             CitaService citaService,
-            DataContext context)
+            VeterinarioService veterinarioService)
         {
             int opcion;
             do
@@ -41,12 +50,11 @@ namespace Gestion_pacientes_mascotas
                 Console.WriteLine("=========================================");
                 Console.WriteLine(" 🏥 CLÍNICA VETERINARIA - MENÚ PRINCIPAL ");
                 Console.WriteLine("=========================================");
-                Console.WriteLine("1️⃣  Menu Pacientes");
-                Console.WriteLine("2️⃣  Menu Mascotas");
+                Console.WriteLine("1️⃣  Menú Pacientes");
+                Console.WriteLine("2️⃣  Menú Mascotas");
                 Console.WriteLine("3️⃣  Agendar cita veterinaria");
                 Console.WriteLine("4️⃣  Ver citas agendadas");
-                Console.WriteLine("5️⃣  Registrar veterinario");
-                Console.WriteLine("6️⃣  Ver veterinarios");
+                Console.WriteLine("5️⃣  Menú Veterinarios");
                 Console.WriteLine("0️⃣  Salir");
                 Console.WriteLine("=========================================");
                 Console.Write("👉 Selecciona una opción: ");
@@ -72,10 +80,7 @@ namespace Gestion_pacientes_mascotas
                             citaService.VerCitas();
                             break;
                         case 5:
-                            RegistrarVeterinario(context);
-                            break;
-                        case 6:
-                            VerVeterinarios(context);
+                            MostrarSubmenuVeterinarios(veterinarioService);
                             break;
                         case 0:
                             Console.WriteLine("👋 Gracias por usar el sistema. ¡Hasta pronto!");
@@ -109,7 +114,7 @@ namespace Gestion_pacientes_mascotas
             while (opcion != "0")
             {
                 Console.Clear();
-                Console.WriteLine("=== MENU PACIENTES ===");
+                Console.WriteLine("=== MENÚ PACIENTES ===");
                 Console.WriteLine("1️⃣ Registrar nuevo paciente");
                 Console.WriteLine("2️⃣ Ver todos los pacientes");
                 Console.WriteLine("3️⃣ Buscar paciente por nombre");
@@ -157,7 +162,7 @@ namespace Gestion_pacientes_mascotas
             while (opcion != "0")
             {
                 Console.Clear();
-                Console.WriteLine("=== MENU MASCOTAS ===");
+                Console.WriteLine("=== MENÚ MASCOTAS ===");
                 Console.WriteLine("1️⃣ Registrar mascota");
                 Console.WriteLine("2️⃣ Ver todas las mascotas");
                 Console.WriteLine("3️⃣ Editar mascota por Id");
@@ -213,40 +218,50 @@ namespace Gestion_pacientes_mascotas
         }
 
         // ==========================================================
-        // VETERINARIOS
+        // SUBMENÚ VETERINARIOS
         // ==========================================================
-        private static void RegistrarVeterinario(DataContext context)
+        private static void MostrarSubmenuVeterinarios(VeterinarioService veterinarioService)
         {
-            Console.WriteLine("=== Registro de Veterinario ===");
-            Console.Write("Nombre: ");
-            string nombre = Console.ReadLine() ?? "";
-            Console.Write("Especialidad: ");
-            string especialidad = Console.ReadLine() ?? "";
-            Console.Write("Teléfono: ");
-            string telefono = Console.ReadLine() ?? "";
-            Console.Write("Email: ");
-            string email = Console.ReadLine() ?? "";
-
-            var veterinario = new Veterinario(nombre, especialidad, telefono, email);
-            context.Veterinarios.Add(veterinario);
-            Logger.LogInfo($"Veterinario registrado: {nombre}", "Program.RegistrarVeterinario");
-
-            Console.WriteLine("✅ Veterinario registrado correctamente.");
-        }
-
-        private static void VerVeterinarios(DataContext context)
-        {
-            Console.WriteLine("=== Lista de Veterinarios ===");
-            if (!context.Veterinarios.Any())
+            string opcion = "";
+            while (opcion != "0")
             {
-                Console.WriteLine("No hay veterinarios registrados.");
-                return;
-            }
+                Console.Clear();
+                Console.WriteLine("=== MENÚ VETERINARIOS ===");
+                Console.WriteLine("1️⃣ Registrar veterinario");
+                Console.WriteLine("2️⃣ Ver veterinarios registrados");
+                Console.WriteLine("3️⃣ Buscar veterinario por nombre");
+                Console.WriteLine("4️⃣ Editar veterinario");
+                Console.WriteLine("5️⃣ Eliminar veterinario");
+                Console.WriteLine("0️⃣ Volver");
+                Console.Write("👉 Seleccione una opción: ");
+                opcion = Console.ReadLine() ?? "";
 
-            foreach (var v in context.Veterinarios)
-            {
-                v.MostrarInformacion();
-                Console.WriteLine("-------------------------");
+                switch (opcion)
+                {
+                    case "1":
+                        veterinarioService.AgregarVeterinario();
+                        break;
+                    case "2":
+                        veterinarioService.ListarVeterinarios();
+                        break;
+                    case "3":
+                        veterinarioService.BuscarVeterinario();
+                        break;
+                    case "4":
+                        veterinarioService.EditarVeterinario();
+                        break;
+                    case "5":
+                        veterinarioService.EliminarVeterinario();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("⚠️ Opción no válida.");
+                        break;
+                }
+
+                Console.WriteLine("\nPresiona una tecla para continuar...");
+                Console.ReadKey();
             }
         }
     }

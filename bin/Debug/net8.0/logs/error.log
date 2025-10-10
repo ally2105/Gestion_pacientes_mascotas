@@ -26,3 +26,8 @@ StackTrace:
 [2025-10-09T23:19:32.7809461Z] INFO MascotaService.Registrar - Mascota registrada: pepito
 [2025-10-09T23:22:13.4504063Z] INFO MascotaService.Registrar - Mascota registrada: penillo
 [2025-10-10T00:18:22.7716313Z] INFO PacienteService.Registrar - Paciente registrado: keyner
+[2025-10-10T18:37:25.8170363Z] INFO PacienteService.Registrar - Paciente registrado: Maria
+[2025-10-10T18:38:12.6938917Z] INFO PacienteService.ActualizarPaciente - Paciente actualizado: Ema
+[2025-10-10T19:49:07.9241513Z] INFO PacienteService.Registrar - Paciente registrado: pepe
+[2025-10-10T23:16:09.0988857Z] INFO PacienteService.Registrar - Paciente registrado: ana
+[2025-10-10T23:33:44.5150691Z] INFO PacienteService.Registrar - Paciente registrado: pepe

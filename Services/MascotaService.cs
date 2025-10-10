@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Gestion_pacientes_mascotas.Database;
 using Gestion_pacientes_mascotas.Utils;
+using Gestion_pacientes_mascotas.Interfaces;
+using System;
+using System.Linq;
 
 namespace Gestion_pacientes_mascotas.Models
 {
