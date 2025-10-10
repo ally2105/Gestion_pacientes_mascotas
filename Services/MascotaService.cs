@@ -67,6 +67,8 @@ namespace Gestion_pacientes_mascotas.Models
             foreach (var mascota in _context.Mascotas)
             {
                 mascota.MostrarInformacion();
+                Console.WriteLine($"La mascota {mascota.Nombre} hace");
+                mascota.EmitirSonido();
                 Console.WriteLine("---");
             }
         }

@@ -34,22 +34,28 @@ namespace Gestion_pacientes_mascotas.Models
             switch (Especie.ToLower())
             {
                 case "perro":
-                    Console.WriteLine("Guau");
+                    Console.WriteLine("Guau 🦮");
+                    break;
+                case "perra":
+                    Console.WriteLine("Guau 🦮");
                     break;
                 case "gato":
-                    Console.WriteLine("Miau");
+                    Console.WriteLine("Miau 🐱");
+                    break;
+                case "gata":
+                    Console.WriteLine("Miau 🐱");
                     break;
                 case "pájaro":
-                    Console.WriteLine("Pío");
+                    Console.WriteLine("Pío 🐣");
                     break;
                 case "vaca":
-                    Console.WriteLine("Muu");
+                    Console.WriteLine("Muu 🐄");
                     break;
                 case "oveja":
-                    Console.WriteLine("Beee");
+                    Console.WriteLine("Beee 🐑");
                     break;
                 case "cerdo":
-                    Console.WriteLine("Oink");
+                    Console.WriteLine("Oink 🐷");
                     break;
                 default:
                     Console.WriteLine("El animal emite un sonido.");

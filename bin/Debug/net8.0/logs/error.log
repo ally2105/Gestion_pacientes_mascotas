@@ -14,3 +14,15 @@ StackTrace:
 --------------------------------------------------------------------------------
 [2025-10-08T23:47:33.8196146Z] INFO PacienteService.Registrar - Paciente registrado: Anita
 [2025-10-08T23:49:00.6243493Z] INFO PacienteService.Registrar - Paciente registrado: allison
+[2025-10-09T21:52:04.3991226Z] INFO PacienteService.Registrar - Paciente registrado: Anita
+[2025-10-09T21:53:47.2665494Z] INFO PacienteService.Registrar - Paciente registrado: sara
+[2025-10-09T21:54:25.8337442Z] INFO CitaService.AgendarCita - Cita agendada: lucas con Dra. Diego Toloza el 2025-09-10 00:00
+[2025-10-09T22:22:02.1341214Z] INFO PacienteService.Registrar - Paciente registrado: luis
+[2025-10-09T22:22:55.4480232Z] INFO MascotaService.Registrar - Mascota registrada: pepita
+[2025-10-09T22:24:04.8532544Z] INFO CitaService.AgendarCita - Cita agendada: pepita con Dr. Sofia Vergara el 2025-09-10 00:00
+[2025-10-09T22:25:19.0117467Z] INFO Program.RegistrarVeterinario - Veterinario registrado: Pepe
+[2025-10-09T23:08:04.2373372Z] INFO MascotaService.Registrar - Mascota registrada: pepe
+[2025-10-09T23:14:38.9120563Z] INFO MascotaService.Registrar - Mascota registrada: pepe
+[2025-10-09T23:19:32.7809461Z] INFO MascotaService.Registrar - Mascota registrada: pepito
+[2025-10-09T23:22:13.4504063Z] INFO MascotaService.Registrar - Mascota registrada: penillo
+[2025-10-10T00:18:22.7716313Z] INFO PacienteService.Registrar - Paciente registrado: keyner
