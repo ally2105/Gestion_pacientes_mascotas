@@ -1,0 +1,43 @@
+[2025-10-06T22:11:52.7161404Z] ERROR PacienteService.Registrar
+Type: System.DivideByZeroException
+Message: Attempted to divide by zero.
+StackTrace:
+   at Gestion_pacientes_mascotas.Models.PacienteService.ForzarErrorParaDepuracion() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 150
+   at Gestion_pacientes_mascotas.Models.PacienteService.Registrar() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 118
+--------------------------------------------------------------------------------
+[2025-10-06T22:20:31.7534559Z] ERROR PacienteService.Registrar
+Type: System.DivideByZeroException
+Message: Attempted to divide by zero.
+StackTrace:
+   at Gestion_pacientes_mascotas.Models.PacienteService.ForzarErrorParaDepuracion() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 144
+   at Gestion_pacientes_mascotas.Models.PacienteService.Registrar() in /home/Coder/Allison_Segrera_Pardo/Gestion_pacientes_mascotas/Services/PacienteService.cs:line 99
+--------------------------------------------------------------------------------
+[2025-10-08T23:47:33.8196146Z] INFO PacienteService.Registrar - Paciente registrado: Anita
+[2025-10-08T23:49:00.6243493Z] INFO PacienteService.Registrar - Paciente registrado: allison
+[2025-10-09T21:52:04.3991226Z] INFO PacienteService.Registrar - Paciente registrado: Anita
+[2025-10-09T21:53:47.2665494Z] INFO PacienteService.Registrar - Paciente registrado: sara
+[2025-10-09T21:54:25.8337442Z] INFO CitaService.AgendarCita - Cita agendada: lucas con Dra. Diego Toloza el 2025-09-10 00:00
+[2025-10-09T22:22:02.1341214Z] INFO PacienteService.Registrar - Paciente registrado: luis
+[2025-10-09T22:22:55.4480232Z] INFO MascotaService.Registrar - Mascota registrada: pepita
+[2025-10-09T22:24:04.8532544Z] INFO CitaService.AgendarCita - Cita agendada: pepita con Dr. Sofia Vergara el 2025-09-10 00:00
+[2025-10-09T22:25:19.0117467Z] INFO Program.RegistrarVeterinario - Veterinario registrado: Pepe
+[2025-10-09T23:08:04.2373372Z] INFO MascotaService.Registrar - Mascota registrada: pepe
+[2025-10-09T23:14:38.9120563Z] INFO MascotaService.Registrar - Mascota registrada: pepe
+[2025-10-09T23:19:32.7809461Z] INFO MascotaService.Registrar - Mascota registrada: pepito
+[2025-10-09T23:22:13.4504063Z] INFO MascotaService.Registrar - Mascota registrada: penillo
+[2025-10-10T00:18:22.7716313Z] INFO PacienteService.Registrar - Paciente registrado: keyner
+[2025-10-10T18:37:25.8170363Z] INFO PacienteService.Registrar - Paciente registrado: Maria
+[2025-10-10T18:38:12.6938917Z] INFO PacienteService.ActualizarPaciente - Paciente actualizado: Ema
+[2025-10-10T19:49:07.9241513Z] INFO PacienteService.Registrar - Paciente registrado: pepe
+[2025-10-10T23:16:09.0988857Z] INFO PacienteService.Registrar - Paciente registrado: ana
+[2025-10-10T23:33:44.5150691Z] INFO PacienteService.Registrar - Paciente registrado: pepe
+[2025-10-17T20:02:23.5209687Z] INFO OwnerService.Register - Owner registered: Pepe
+[2025-10-17T20:02:51.6948622Z] INFO OwnerService.UpdateOwner - Owner updated: Pepe
+[2025-10-17T20:12:45.8194740Z] INFO OwnerService.DeleteOwner - Owner deleted: Pepe
+[2025-10-17T20:13:23.4716098Z] INFO PetService.Register - Pet registered: Rocky
+[2025-10-17T20:14:20.3425373Z] INFO OwnerService.Register - Owner registered: Juan Perez
+[2025-10-17T20:17:03.9710212Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: Rocky with Juaco on 2025-10-17 15:16
+[2025-10-17T20:18:06.4775228Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: paulo with Juaco on 2025-10-17 15:17
+[2025-10-17T20:23:32.1871491Z] INFO OwnerService.Register - Owner registered: Pepe
+[2025-10-17T20:23:58.7364588Z] INFO OwnerService.UpdateOwner - Owner updated: Pepe
+[2025-10-17T20:25:36.1862276Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: Juaquin with Toloza on 2025-10-17 15:25

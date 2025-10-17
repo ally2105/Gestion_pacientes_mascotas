@@ -1,21 +1,31 @@
+using System;
+
 namespace Gestion_pacientes_mascotas.Models
 {
     public abstract class Animal
     {
-        public string Nombre { get; protected set; }
-        public string Especie { get; protected set; }
-        public int Edad { get; protected set; }
+        // Animal is abstract because it represents a general concept. Having it
+        // as abstract allows defining default behavior and forcing
+        // subclasses to override (if necessary) certain methods.
+        // We make the setters public to allow editing from services.
+        // In stricter applications, it would be preferable to expose modification methods
+        // in the entity to maintain invariants.
+        public string Name { get; set; }
+        public string Species { get; set; }
+        public int Age { get; set; }
 
-        public Animal(string nombre, string especie, int edad)
+        public Animal(string name, string species, int age)
         {
-            Nombre = nombre;
-            Especie = especie;
-            Edad = edad;
+            Name = name;
+            Species = species;
+            Age = age;
         }
 
-        public  virtual void EmitirSonido()
+        // MakeSound has a default implementation; pets override
+        // this method for specific behaviors (polymorphism).
+        public virtual void MakeSound()
         {
-            Console.WriteLine("El animal emite un sonido.");
+            Console.WriteLine("The animal makes a sound.");
         }
     }
 }
