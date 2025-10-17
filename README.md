@@ -1,62 +1,75 @@
-# Gestion_pacientes_mascotas
+## Patient and Pet Management
 
-Pequeña consola en C# para gestionar pacientes y sus mascotas (POCOs + servicios).
+A C# (.NET) console application to manage patients and their pets using POCOs and services, following best practices in architecture and design.
 
-Resumen rápido
-- Lenguaje: C# (.NET). Proyecto: `Gestion_pacientes_mascotas.csproj`.
-- Estructura relevante:
-  - `Models/` — entidades: `Paciente`, `Mascota`, `Animal`.
-  - `Services/` — lógica de aplicación: `PacienteService`, `MascotaService`, `ServicioVeterinario`.
-  - `Interfaces/` — contratos: `IRegistrable`, `IAtendible`, `INotificable`.
-  - `Utils/Logger.cs` — logger minimalista que escribe en `logs/error.log`.
+## Project Overview
 
-Cómo ejecutar
-1. Restaurar paquetes y compilar:
+- Language: C# (.NET 6+ recommended)
 
-```bash
+- Project: Gestion_pacientes_mascotas.csproj
+
+- Architecture:
+
+- Models/ — Clean entities (POCOs): Paciente, Mascota, Animal (abstract).
+
+- Services/ — Business and application logic: PacienteService, MascotaService, ServicioVeterinario (abstract).
+
+- Interfaces/ — Contracts for decoupling implementations: IRegistrable, IAtendible, INotificable.
+
+- Utils/Logger.cs — Minimalistic logger for error logging (logs/error.log).
+
+## How to Run
+
+1. Restore packages and build:
+
 dotnet build
-```
 
-2. Ejecutar la aplicación:
+2. Run the application:
 
-```bash
 dotnet run --project Gestion_pacientes_mascotas.csproj
-```
 
-Puntos de diseño y por qué
-- Entidades limpias (POCOs): `Paciente` y `Mascota` no contienen I/O; ayudan a testabilidad.
-- Servicios: contienen la lógica de E/S, validaciones y operaciones (p. ej. `PacienteService.Registrar()`).
-- Interfaces: usadas para desacoplar y permitir múltiples implementaciones (tests, persistencia).
-- Abstractas (p. ej. `Animal`, `ServicioVeterinario`): proporcionan comportamiento compartido y contrato para subclases.
+## Design and Rationale
+- POCOs (Plain Old CLR Objects):
 
-Depuración y pruebas manuales
-- Breakpoints útiles:
-  - `Program.cs`: en la creación de `PacienteService` y en la llamada a `Registrar()`.
-  - `Services/PacienteService.cs`: inicio de `Registrar()`, después de validar `edad`, después de crear `nuevoPaciente`, y justo antes de `pacientes.Add(...)`.
-- Forzar error para practicar depuración: en modo DEBUG la aplicación pregunta si deseas forzar un DivideByZeroException durante el registro (útil para ver manejo de excepciones y stack trace).
+Entities without I/O logic or direct dependencies to ease testing and maintenance.
 
-Registro de errores (logging)
-- Archivo: `logs/error.log` (creado por `Utils/Logger.cs`).
-- Uso en código: `Logger.LogError(ex, "Contexto")`, `Logger.LogWarning("Mensaje")`.
-- En un entorno real: usar Serilog/NLog/Microsoft.Extensions.Logging, configurar rotación, sinks y correlación (RequestId).
+- Services:
 
-Buenas prácticas implementadas
-- Validaciones robustas de entrada (int.TryParse, comprobaciones de cadenas, etc.).
-- Manejo de excepciones con `try-catch-finally` en puntos críticos; los catches no silencian errores: los registran y muestran mensajes útiles al usuario.
-- Excepciones personalizadas: `MascotaNoEncontradaException` para casos de negocio específicos.
+Contain business logic, validations, and operational workflows. For example: PacienteService.Registrar().
 
-Siguientes pasos recomendados
-- Extraer la lógica de persistencia a un `IRepository<T>` y proporcionar una implementación en memoria + una con EF Core.
-- Reemplazar `Utils/Logger` por Serilog con sinks para archivo y (opcional) ElasticSearch/Seq.
-- Añadir tests unitarios para `PacienteService` y `Mascota`.
+- Interfaces:
 
-Contacto y soporte
-- Para reproducir un error: ejecutar, anotar la hora y revisar `logs/error.log`.
-- En un entorno de soporte técnico, provee el fragmento de log (timestamp + stack trace) para acelerar el diagnóstico.
+Promote decoupling and allow multiple implementations (e.g., in-memory or real database repositories).
 
----
+- Abstract classes:
 
-Si quieres, puedo:
-- Añadir `IRepository<T>` de ejemplo.
-- Integrar Serilog y configurar rotación de logs.
-- Crear tests unitarios básicos con xUnit/NUnit.
+Define shared behavior and contracts for subclasses (like Animal or ServicioVeterinario).
+
+##  Debugging and Manual Testing
+- Recommended breakpoints:
+
+  - Program.cs: service creation and key method calls (Registrar()).
+
+  - Services/PacienteService.cs: critical points such as start/end of registration, validations, and list additions.
+
+- Error simulation:
+
+  - In DEBUG mode, the app prompts if you want to force a   DivideByZeroException to practice exception handling and stack trace analysis.
+
+## Implemented Best Practices
+
+- Thorough validations (using TryParse, null/empty checks).
+
+- Robust exception handling with logs and user-friendly messages.
+
+- Custom exceptions for business cases (e.g., MascotaNotFoundException).
+
+- Clean, modular code facilitating extensibility.
+
+## Support and Contact
+
+- To reproduce an error:
+- Run the app, note the time, and check logs/error.log for the relevant entry.
+
+- For technical support:
+- Provide log snippets (timestamp + stack trace) to speed up diagnosis.

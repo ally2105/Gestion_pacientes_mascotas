@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Gestion_pacientes_mascotas.Utils
 {
-    // Logger minimalista para demos: escribe entradas con timestamp en logs/error.log
-    // No reemplaza un framework de logging en producción (Serilog, NLog, Microsoft.Extensions.Logging).
+    // Minimalist logger for demos: writes timestamped entries to logs/error.log
+    // Does not replace a production logging framework (Serilog, NLog, Microsoft.Extensions.Logging).
     public static class Logger
     {
         private static readonly object _lock = new object();
@@ -28,7 +28,7 @@ namespace Gestion_pacientes_mascotas.Utils
             }
             catch
             {
-                // No lanzar desde el logger; fallbacks en producción deberían manejarlo.
+                // Do not throw from the logger; fallbacks in production should handle it.
             }
         }
 

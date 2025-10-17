@@ -13,7 +13,7 @@ namespace Gestion_pacientes_mascotas.Utils
                 Console.Write(prompt);
                 value = Console.ReadLine() ?? "";
                 if (string.IsNullOrWhiteSpace(value))
-                    Console.WriteLine("⚠️ Este campo no puede estar vacío.");
+                    Console.WriteLine("⚠️ This field cannot be empty.");
             } while (string.IsNullOrWhiteSpace(value));
             return value;
         }
@@ -27,39 +27,39 @@ namespace Gestion_pacientes_mascotas.Utils
                 var input = Console.ReadLine() ?? "";
                 if (int.TryParse(input, out result) && (validator == null || validator(result)))
                     return result;
-                Console.WriteLine("⚠️ Entrada inválida. Intente nuevamente.");
+                Console.WriteLine("⚠️ Invalid input. Please try again.");
             }
         }
 
-        // Extrae la interacción de edición de una mascota para evitar duplicación
-        public static void EditarMascotaInteractiva(Mascota mascota)
+        // Extracts the pet editing interaction to avoid duplication
+        public static void EditPetInteractively(Pet pet)
         {
-            if (mascota == null) return;
-            Console.WriteLine("=== Editar Mascota ===");
-            Console.Write($"Nombre ({mascota.Nombre}): ");
-            string nombre = Console.ReadLine() ?? "";
-            if (!string.IsNullOrWhiteSpace(nombre))
-                mascota.Nombre = nombre;
+            if (pet == null) return;
+            Console.WriteLine("=== Edit Pet ===");
+            Console.Write($"Name ({pet.Name}): ");
+            string name = Console.ReadLine() ?? "";
+            if (!string.IsNullOrWhiteSpace(name))
+                pet.Name = name;
 
-            Console.Write($"Especie ({mascota.Especie}): ");
-            string especie = Console.ReadLine() ?? "";
-            if (!string.IsNullOrWhiteSpace(especie))
-                mascota.Especie = especie;
+            Console.Write($"Species ({pet.Species}): ");
+            string species = Console.ReadLine() ?? "";
+            if (!string.IsNullOrWhiteSpace(species))
+                pet.Species = species;
 
-            Console.Write($"Raza ({mascota.Raza}): ");
-            string raza = Console.ReadLine() ?? "";
-            if (!string.IsNullOrWhiteSpace(raza))
-                mascota.Raza = raza;
+            Console.Write($"Breed ({pet.Breed}): ");
+            string breed = Console.ReadLine() ?? "";
+            if (!string.IsNullOrWhiteSpace(breed))
+                pet.Breed = breed;
 
-            Console.Write($"Edad ({mascota.Edad}): ");
+            Console.Write($"Age ({pet.Age}): ");
             string edadInput = Console.ReadLine() ?? "";
             if (int.TryParse(edadInput, out int edad) && edad >= 0)
-                mascota.Edad = edad;
+                pet.Age = edad;
 
-            Console.Write($"Dueño ({mascota.Dueno}): ");
-            string dueno = Console.ReadLine() ?? "";
-            if (!string.IsNullOrWhiteSpace(dueno))
-                mascota.Dueno = dueno;
+            Console.Write($"Owner ({pet.OwnerName}): ");
+            string ownerName = Console.ReadLine() ?? "";
+            if (!string.IsNullOrWhiteSpace(ownerName))
+                pet.OwnerName = ownerName;
         }
     }
 }

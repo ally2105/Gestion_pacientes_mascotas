@@ -1,29 +1,29 @@
-# Registro de errores (Logging)
+# Error Logging
 
-Este proyecto incluye un logger minimalista (`Utils/Logger.cs`) que escribe entradas con timestamp en `logs/error.log`.
+This project includes a minimalist logger (`Utils/Logger.cs`) that writes timestamped entries to `logs/error.log`.
 
-Qué registra
-- Errores (excepciones) con tipo, mensaje y stack trace.
-- Advertencias y mensajes informativos.
+What it logs
+- Errors (exceptions) with type, message, and stack trace.
+- Warnings and informational messages.
 
-Formato
-- Las entradas usan timestamp en formato ISO 8601 (`DateTime.UtcNow:O`) y un separador legible.
+Format
+- Entries use a timestamp in ISO 8601 format (`DateTime.UtcNow:O`) and a readable separator.
 
-Por qué esto ayuda en un entorno real
-- Trazabilidad: el soporte puede correlacionar la hora del incidente con registros del servidor.
-- Diagnóstico: el stack trace y el tipo de excepción aceleran la identificación de la causa raíz.
-- Privacidad: no escribimos datos sensibles por defecto; en producción se deben enmascarar o redaccionar datos personales.
-- Auditoría: los registros permiten reconstruir pasos antes de un fallo.
+Why this helps in a real environment
+- Traceability: support can correlate the incident time with server logs.
+- Diagnostics: the stack trace and exception type speed up root cause identification.
+- Privacy: we do not write sensitive data by default; in production, personal data should be masked or redacted.
+- Auditing: logs allow reconstructing the steps before a failure.
 
-Buenas prácticas para producción
-- Usar frameworks robustos (Serilog, NLog o Microsoft.Extensions.Logging) con sinks (files, ElasticSearch, Seq).
-- Añadir correlación de requests (RequestId) para agrupar logs relacionados.
-- Configurar niveles (Error/Warn/Info/Debug) y rotación de logs para evitar uso excesivo de disco.
-- Encriptar o proteger logs que contengan información personal.
+Best practices for production
+- Use robust frameworks (Serilog, NLog, or Microsoft.Extensions.Logging) with sinks (files, ElasticSearch, Seq).
+- Add request correlation (RequestId) to group related logs.
+- Configure levels (Error/Warn/Info/Debug) and log rotation to avoid excessive disk usage.
+- Encrypt or protect logs containing personal information.
 
-Cómo usarlo
-- Desde cualquier catch: `Logger.LogError(ex, "ContextoOpcional")`.
-- Para advertencias: `Logger.LogWarning("Mensaje")`.
-- Para información: `Logger.LogInfo("Mensaje")`.
+How to use it
+- From any catch block: `Logger.LogError(ex, "OptionalContext")`.
+- For warnings: `Logger.LogWarning("Message")`.
+- For information: `Logger.LogInfo("Message")`.
 
-Ubicación del archivo de logs: `logs/error.log` en el directorio base de la aplicación.
+Log file location: `logs/error.log` in the application's base directory.

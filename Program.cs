@@ -10,257 +10,257 @@ namespace Gestion_pacientes_mascotas
     {
         private static void Main(string[] args)
         {
-            Console.Title = "🐾 Clínica Veterinaria - Gestión de Pacientes y Mascotas 🐶🐱";
+            Console.Title = "🐾 Veterinary Clinic - Pet and Owner Management 🐶🐱";
 
-            // ==========================================================
-            // CONTEXTO COMPARTIDO
-            // ==========================================================
+            // --- DEPENDENCY INJECTION SETUP (MANUAL) ---
+            // A single DataContext instance is created and shared across all services.
+            // This ensures that all parts of the application work with the same set of data.
             var context = new DataContext();
 
-            // ==========================================================
-            // CREACIÓN DE SERVICIOS
-            // ==========================================================
-            var pacienteService = new PacienteService(context);
-            var mascotaService = new MascotaService(context, pacienteService);
-            var citaService = new CitaService(context);
-            var veterinarioService = new VeterinarioService(); // ✅ Servicio corregido
+            // Instantiate services, injecting the shared context.
+            var ownerService = new OwnerService(context);
+            var petService = new PetService(context, ownerService);
+            var appointmentService = new AppointmentService(context);
+            var veterinarianService = new VeterinarianService(context);
 
-            // Vincular dependencias
-            pacienteService.MascotaService = mascotaService;
+            // Manually link services that depend on each other.
+            // PetService needs OwnerService to handle pet-owner associations.
+            ownerService.PetService = petService;
 
-            // ==========================================================
-            // MENÚ PRINCIPAL
-            // ==========================================================
-            MostrarMenuPrincipal(pacienteService, mascotaService, citaService, veterinarioService);
+            // Start the main application loop.
+            ShowMainMenu(ownerService, petService, appointmentService, veterinarianService);
         }
 
-        // ==========================================================
-        // MENÚ PRINCIPAL
-        // ==========================================================
-        private static void MostrarMenuPrincipal(
-            PacienteService pacienteService,
-            MascotaService mascotaService,
-            CitaService citaService,
-            VeterinarioService veterinarioService)
+        /// <summary>
+        /// Displays the main menu and handles user navigation.
+        /// </summary>
+        private static void ShowMainMenu(
+            OwnerService ownerService,
+            PetService petService,
+            AppointmentService appointmentService,
+            VeterinarianService veterinarianService)
         {
             int opcion;
             do
             {
+                // Main menu UI
                 Console.Clear();
                 Console.WriteLine("=========================================");
-                Console.WriteLine(" 🏥 CLÍNICA VETERINARIA - MENÚ PRINCIPAL ");
+                Console.WriteLine(" 🏥 VETERINARY CLINIC - MAIN MENU ");
                 Console.WriteLine("=========================================");
-                Console.WriteLine("1️⃣  Menú Pacientes");
-                Console.WriteLine("2️⃣  Menú Mascotas");
-                Console.WriteLine("3️⃣  Agendar cita veterinaria");
-                Console.WriteLine("4️⃣  Ver citas agendadas");
-                Console.WriteLine("5️⃣  Menú Veterinarios");
-                Console.WriteLine("0️⃣  Salir");
+                Console.WriteLine("1️⃣  Owners Menu");
+                Console.WriteLine("2️⃣  Pets Menu");
+                Console.WriteLine("3️⃣  Schedule a veterinary appointment");
+                Console.WriteLine("4️⃣  View scheduled appointments");
+                Console.WriteLine("5️⃣  Veterinarians Menu");
+                Console.WriteLine("0️⃣  Exit");
                 Console.WriteLine("=========================================");
-                Console.Write("👉 Selecciona una opción: ");
+                Console.Write("👉 Select an option: ");
 
                 string input = Console.ReadLine() ?? "";
                 int.TryParse(input, out opcion);
                 Console.Clear();
 
+                // Main application logic switch
                 try
                 {
                     switch (opcion)
                     {
                         case 1:
-                            MostrarSubmenuPacientes(pacienteService);
+                            ShowOwnersSubmenu(ownerService);
                             break;
                         case 2:
-                            MostrarSubmenuMascotas(mascotaService);
+                            ShowPetsSubmenu(petService);
                             break;
                         case 3:
-                            citaService.AgendarCita();
+                            appointmentService.ScheduleAppointment();
                             break;
                         case 4:
-                            citaService.VerCitas();
+                            appointmentService.ViewAppointments();
                             break;
                         case 5:
-                            MostrarSubmenuVeterinarios(veterinarioService);
+                            ShowVeterinariansSubmenu(veterinarianService);
                             break;
                         case 0:
-                            Console.WriteLine("👋 Gracias por usar el sistema. ¡Hasta pronto!");
+                            Console.WriteLine("👋 Thank you for using the system. See you soon!");
                             break;
                         default:
-                            Console.WriteLine("⚠️ Opción no válida.");
+                            Console.WriteLine("⚠️ Invalid option.");
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("❌ Error inesperado: " + ex.Message);
-                    Logger.LogError(ex, "Program.MostrarMenuPrincipal");
+                    // Global exception handler for unexpected errors in the main loop.
+                    Console.WriteLine("❌ Unexpected error: " + ex.Message);
+                    Logger.LogError(ex, "Program.ShowMainMenu");
                 }
 
                 if (opcion != 0)
                 {
-                    Console.WriteLine("\nPresiona cualquier tecla para continuar...");
+                    Console.WriteLine("\nPress any key to continue...");
                     Console.ReadKey();
                 }
 
             } while (opcion != 0);
         }
 
-        // ==========================================================
-        // SUBMENÚ PACIENTES
-        // ==========================================================
-        private static void MostrarSubmenuPacientes(PacienteService pacienteService)
+        /// <summary>
+        /// Displays the submenu for owner management.
+        /// </summary>
+        private static void ShowOwnersSubmenu(OwnerService ownerService)
         {
             string opcion = "";
             while (opcion != "0")
             {
                 Console.Clear();
-                Console.WriteLine("=== MENÚ PACIENTES ===");
-                Console.WriteLine("1️⃣ Registrar nuevo paciente");
-                Console.WriteLine("2️⃣ Ver todos los pacientes");
-                Console.WriteLine("3️⃣ Buscar paciente por nombre");
-                Console.WriteLine("4️⃣ Actualizar paciente");
-                Console.WriteLine("5️⃣ Eliminar paciente");
-                Console.WriteLine("0️⃣ Volver");
-                Console.Write("👉 Seleccione una opción: ");
+                Console.WriteLine("=== OWNERS MENU ===");
+                Console.WriteLine("1️⃣ Register new owner");
+                Console.WriteLine("2️⃣ View all owners");
+                Console.WriteLine("3️⃣ Search owner by name");
+                Console.WriteLine("4️⃣ Update owner");
+                Console.WriteLine("5️⃣ Delete owner");
+                Console.WriteLine("0️⃣ Back");
+                Console.Write("👉 Select an option: ");
                 opcion = Console.ReadLine() ?? "";
 
                 switch (opcion)
                 {
                     case "1":
-                        pacienteService.Registrar();
+                        ownerService.Register();
                         break;
                     case "2":
-                        pacienteService.VerPacientes();
+                        ownerService.ViewOwners();
                         break;
                     case "3":
-                        pacienteService.BuscarPacientePorNombre();
+                        ownerService.SearchOwnerByName();
                         break;
                     case "4":
-                        pacienteService.ActualizarPaciente();
+                        ownerService.UpdateOwner();
                         break;
                     case "5":
-                        pacienteService.EliminarPaciente();
+                        ownerService.DeleteOwner();
                         break;
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("⚠️ Opción no válida.");
+                        Console.WriteLine("⚠️ Invalid option.");
                         break;
                 }
 
-                Console.WriteLine("\nPresiona una tecla para continuar...");
+                Console.WriteLine("\nPress a key to continue...");
                 Console.ReadKey();
             }
         }
 
-        // ==========================================================
-        // SUBMENÚ MASCOTAS
-        // ==========================================================
-        private static void MostrarSubmenuMascotas(MascotaService mascotaService)
+        /// <summary>
+        /// Displays the submenu for pet management.
+        /// </summary>
+        private static void ShowPetsSubmenu(PetService petService)
         {
             string opcion = "";
             while (opcion != "0")
             {
                 Console.Clear();
-                Console.WriteLine("=== MENÚ MASCOTAS ===");
-                Console.WriteLine("1️⃣ Registrar mascota");
-                Console.WriteLine("2️⃣ Ver todas las mascotas");
-                Console.WriteLine("3️⃣ Editar mascota por Id");
-                Console.WriteLine("4️⃣ Eliminar mascota por Id");
-                Console.WriteLine("0️⃣ Volver");
-                Console.Write("👉 Seleccione una opción: ");
+                Console.WriteLine("=== PETS MENU ===");
+                Console.WriteLine("1️⃣ Register pet");
+                Console.WriteLine("2️⃣ View all pets");
+                Console.WriteLine("3️⃣ Edit pet by Id");
+                Console.WriteLine("4️⃣ Delete pet by Id");
+                Console.WriteLine("0️⃣ Back");
+                Console.Write("👉 Select an option: ");
                 opcion = Console.ReadLine() ?? "";
 
                 switch (opcion)
                 {
                     case "1":
-                        mascotaService.Registrar();
+                        petService.Register();
                         break;
                     case "2":
-                        mascotaService.VerMascotas();
+                        petService.ViewPets();
                         break;
                     case "3":
-                        Console.Write("Ingrese Id (GUID) de la mascota a editar: ");
+                        Console.Write("Enter pet Id (GUID) to edit: ");
                         if (Guid.TryParse(Console.ReadLine(), out Guid idEdit))
                         {
-                            var mascota = mascotaService.BuscarPorId(idEdit);
-                            if (mascota != null)
-                                mascotaService.EditarMascota(mascota);
+                            var pet = petService.FindById(idEdit);
+                            if (pet != null)
+                                petService.EditPet(pet);
                             else
-                                Console.WriteLine("⚠️ No se encontró mascota con ese Id.");
+                                Console.WriteLine("⚠️ No pet found with that Id.");
                         }
                         else
                         {
-                            Console.WriteLine("⚠️ Id inválido.");
+                            Console.WriteLine("⚠️ Invalid Id.");
                         }
                         break;
                     case "4":
-                        Console.Write("Ingrese Id (GUID) de la mascota a eliminar: ");
+                        Console.Write("Enter pet Id (GUID) to delete: ");
                         if (Guid.TryParse(Console.ReadLine(), out Guid idDel))
                         {
-                            mascotaService.EliminarPorId(idDel);
+                            petService.DeleteById(idDel);
                         }
                         else
                         {
-                            Console.WriteLine("⚠️ Id inválido.");
+                            Console.WriteLine("⚠️ Invalid Id.");
                         }
                         break;
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("⚠️ Opción no válida.");
+                        Console.WriteLine("⚠️ Invalid option.");
                         break;
                 }
 
-                Console.WriteLine("\nPresiona una tecla para continuar...");
+                Console.WriteLine("\nPress a key to continue...");
                 Console.ReadKey();
             }
         }
 
-        // ==========================================================
-        // SUBMENÚ VETERINARIOS
-        // ==========================================================
-        private static void MostrarSubmenuVeterinarios(VeterinarioService veterinarioService)
+        /// <summary>
+        /// Displays the submenu for veterinarian management.
+        /// </summary>
+        private static void ShowVeterinariansSubmenu(VeterinarianService veterinarianService)
         {
             string opcion = "";
             while (opcion != "0")
             {
                 Console.Clear();
-                Console.WriteLine("=== MENÚ VETERINARIOS ===");
-                Console.WriteLine("1️⃣ Registrar veterinario");
-                Console.WriteLine("2️⃣ Ver veterinarios registrados");
-                Console.WriteLine("3️⃣ Buscar veterinario por nombre");
-                Console.WriteLine("4️⃣ Editar veterinario");
-                Console.WriteLine("5️⃣ Eliminar veterinario");
-                Console.WriteLine("0️⃣ Volver");
-                Console.Write("👉 Seleccione una opción: ");
+                Console.WriteLine("=== VETERINARIANS MENU ===");
+                Console.WriteLine("1️⃣ Register veterinarian");
+                Console.WriteLine("2️⃣ View registered veterinarians");
+                Console.WriteLine("3️⃣ Search veterinarian by name");
+                Console.WriteLine("4️⃣ Edit veterinarian");
+                Console.WriteLine("5️⃣ Delete veterinarian");
+                Console.WriteLine("0️⃣ Back");
+                Console.Write("👉 Select an option: ");
                 opcion = Console.ReadLine() ?? "";
 
                 switch (opcion)
                 {
                     case "1":
-                        veterinarioService.AgregarVeterinario();
+                        veterinarianService.AddVeterinarian();
                         break;
                     case "2":
-                        veterinarioService.ListarVeterinarios();
+                        veterinarianService.ListVeterinarians();
                         break;
                     case "3":
-                        veterinarioService.BuscarVeterinario();
+                        veterinarianService.SearchVeterinarian();
                         break;
                     case "4":
-                        veterinarioService.EditarVeterinario();
+                        veterinarianService.EditVeterinarian();
                         break;
                     case "5":
-                        veterinarioService.EliminarVeterinario();
+                        veterinarianService.DeleteVeterinarian();
                         break;
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("⚠️ Opción no válida.");
+                        Console.WriteLine("⚠️ Invalid option.");
                         break;
                 }
 
-                Console.WriteLine("\nPresiona una tecla para continuar...");
+                Console.WriteLine("\nPress a key to continue...");
                 Console.ReadKey();
             }
         }

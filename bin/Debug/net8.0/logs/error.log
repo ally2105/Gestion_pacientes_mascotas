@@ -31,3 +31,13 @@ StackTrace:
 [2025-10-10T19:49:07.9241513Z] INFO PacienteService.Registrar - Paciente registrado: pepe
 [2025-10-10T23:16:09.0988857Z] INFO PacienteService.Registrar - Paciente registrado: ana
 [2025-10-10T23:33:44.5150691Z] INFO PacienteService.Registrar - Paciente registrado: pepe
+[2025-10-17T20:02:23.5209687Z] INFO OwnerService.Register - Owner registered: Pepe
+[2025-10-17T20:02:51.6948622Z] INFO OwnerService.UpdateOwner - Owner updated: Pepe
+[2025-10-17T20:12:45.8194740Z] INFO OwnerService.DeleteOwner - Owner deleted: Pepe
+[2025-10-17T20:13:23.4716098Z] INFO PetService.Register - Pet registered: Rocky
+[2025-10-17T20:14:20.3425373Z] INFO OwnerService.Register - Owner registered: Juan Perez
+[2025-10-17T20:17:03.9710212Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: Rocky with Juaco on 2025-10-17 15:16
+[2025-10-17T20:18:06.4775228Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: paulo with Juaco on 2025-10-17 15:17
+[2025-10-17T20:23:32.1871491Z] INFO OwnerService.Register - Owner registered: Pepe
+[2025-10-17T20:23:58.7364588Z] INFO OwnerService.UpdateOwner - Owner updated: Pepe
+[2025-10-17T20:25:36.1862276Z] INFO AppointmentService.ScheduleAppointment - Appointment scheduled: Juaquin with Toloza on 2025-10-17 15:25

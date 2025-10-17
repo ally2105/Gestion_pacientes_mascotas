@@ -4,28 +4,28 @@ namespace Gestion_pacientes_mascotas.Models
 {
     public abstract class Animal
     {
-        // Animal es abstracto porque representa un concepto general. Tenerlo
-        // como abstracto permite definir comportamiento por defecto y forzar
-        // a las subclases a sobrescribir (si es necesario) ciertos métodos.
-    // Hacemos los setters públicos para permitir edición desde servicios.
-    // En aplicaciones más estrictas se preferiría exponer métodos de modificación
-    // en la entidad para mantener invariantes.
-    public string Nombre { get; set; }
-    public string Especie { get; set; }
-    public int Edad { get; set; }
+        // Animal is abstract because it represents a general concept. Having it
+        // as abstract allows defining default behavior and forcing
+        // subclasses to override (if necessary) certain methods.
+        // We make the setters public to allow editing from services.
+        // In stricter applications, it would be preferable to expose modification methods
+        // in the entity to maintain invariants.
+        public string Name { get; set; }
+        public string Species { get; set; }
+        public int Age { get; set; }
 
-        public Animal(string nombre, string especie, int edad)
+        public Animal(string name, string species, int age)
         {
-            Nombre = nombre;
-            Especie = especie;
-            Edad = edad;
+            Name = name;
+            Species = species;
+            Age = age;
         }
 
-        // EmitirSonido tiene implementación por defecto; las mascotas sobrescriben
-        // este método para comportamientos específicos (polimorfismo).
-        public virtual void EmitirSonido()
+        // MakeSound has a default implementation; pets override
+        // this method for specific behaviors (polymorphism).
+        public virtual void MakeSound()
         {
-            Console.WriteLine("El animal emite un sonido.");
+            Console.WriteLine("The animal makes a sound.");
         }
     }
 }
